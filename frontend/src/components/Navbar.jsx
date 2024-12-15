@@ -10,6 +10,7 @@ import { HiOutlineUser } from "react-icons/hi";
 import avatarImg from "../assets/avatar.png";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useAuth } from "../context/AuthContext";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard" },
@@ -19,16 +20,15 @@ const navigation = [
 ];
 
 const Navbar = () => {
-  const currentUser = false;
-
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const cartItems = useSelector((state) => state.cart.cartItems);
   console.log(cartItems);
 
+  const { currentUser, logout } = useAuth();
+
   const handleLogOut = () => {
-    console.log("Logged out");
-    // Add your logout logic here
+    logout();
   };
 
   return (

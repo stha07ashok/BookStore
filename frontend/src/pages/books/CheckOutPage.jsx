@@ -1,22 +1,29 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useAuth } from "../../context/AuthContext";
+import Swal from "sweetalert2";
+import { useCreateOrderMutation } from "../../redux/features/orders/ordersApi";
 
 const CheckOutPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalPrice = cartItems
     .reduce((acc, item) => acc + item.newPrice, 0)
     .toFixed(2);
-  const currentUser = true; // todo: get user from auth
+  const { currentUser } = useAuth();
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
+
+  const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+  const navigate = useNavigate();
+
   const [isChecked, setIsChecked] = useState(false);
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const newOrder = {
       name: data.name,
       email: currentUser?.email,
@@ -30,8 +37,25 @@ const CheckOutPage = () => {
       productIds: cartItems.map((item) => item?._id),
       totalPrice: totalPrice,
     };
-    console.log(newOrder);
+    try {
+      await createOrder(newOrder).unwrap();
+      Swal.fire({
+        title: "Confirmed Order",
+        text: "Your order placed successfully!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, It's Okay!",
+      });
+      navigate("/orders");
+    } catch (error) {
+      console.error("Error place an order", error);
+      alert("Failed to place an order");
+    }
   };
+
+  if (isLoading) return <div>Loading....</div>;
 
   return (
     <section>
@@ -63,6 +87,7 @@ const CheckOutPage = () => {
                     <div className="md:col-span-5">
                       <label htmlFor="full_name">Full Name</label>
                       <input
+                        {...register("name", { required: true })}
                         type="text"
                         name="name"
                         id="name"
@@ -85,6 +110,7 @@ const CheckOutPage = () => {
                     <div className="md:col-span-5">
                       <label html="phone">Phone Number</label>
                       <input
+                        {...register("phone", { required: true })}
                         type="number"
                         name="phone"
                         id="phone"
@@ -96,6 +122,7 @@ const CheckOutPage = () => {
                     <div className="md:col-span-3">
                       <label htmlFor="address">Address / Street</label>
                       <input
+                        {...register("address", { required: true })}
                         type="text"
                         name="address"
                         id="address"
@@ -107,6 +134,7 @@ const CheckOutPage = () => {
                     <div className="md:col-span-2">
                       <label htmlFor="city">City</label>
                       <input
+                        {...register("city", { required: true })}
                         type="text"
                         name="city"
                         id="city"
@@ -119,6 +147,7 @@ const CheckOutPage = () => {
                       <label htmlFor="country">Country / region</label>
                       <div className="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
                         <input
+                          {...register("country", { required: true })}
                           name="country"
                           id="country"
                           placeholder="Country"
@@ -164,6 +193,7 @@ const CheckOutPage = () => {
                       <label htmlFor="state">State / province</label>
                       <div className="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
                         <input
+                          {...register("state", { required: true })}
                           name="state"
                           id="state"
                           placeholder="State"
@@ -205,6 +235,7 @@ const CheckOutPage = () => {
                     <div className="md:col-span-1">
                       <label htmlFor="zipcode">Zipcode</label>
                       <input
+                        {...register("zipcode", { required: true })}
                         type="text"
                         name="zipcode"
                         id="zipcode"
@@ -216,6 +247,7 @@ const CheckOutPage = () => {
                     <div className="md:col-span-5 mt-3">
                       <div className="inline-flex items-center">
                         <input
+                          onChange={(e) => setIsChecked(e.target.checked)}
                           type="checkbox"
                           name="billing_same"
                           id="billing_same"
@@ -237,7 +269,7 @@ const CheckOutPage = () => {
                     <div className="md:col-span-5 text-right">
                       <div className="inline-flex items-end">
                         <button
-                          //   disabled={!isChecked}
+                          disabled={!isChecked}
                           className="bg-blue-500 hover:bg-blue-700 text-white hover font-bold py-2 px-4 rounded"
                         >
                           Place an Order

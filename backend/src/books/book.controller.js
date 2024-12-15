@@ -8,12 +8,12 @@ const postABook = async (req, res) => {
       .status(200)
       .send({ message: "Book posted successfully", book: newBook });
   } catch (error) {
-    console.error("error creating book", error);
-    res.status(500).send({ message: "error creating book" });
+    console.error("Error creating book", error);
+    res.status(500).send({ message: "Failed to create book" });
   }
 };
 
-//get all books
+// get all books
 const getAllBooks = async (req, res) => {
   try {
     const books = await Book.find().sort({ createdAt: -1 });
@@ -24,10 +24,9 @@ const getAllBooks = async (req, res) => {
   }
 };
 
-//get single book
 const getSingleBook = async (req, res) => {
   try {
-    const { id } = req.params; //send book id
+    const { id } = req.params;
     const book = await Book.findById(id);
     if (!book) {
       res.status(404).send({ message: "Book not Found!" });
@@ -59,7 +58,6 @@ const UpdateBook = async (req, res) => {
   }
 };
 
-//delete book
 const deleteABook = async (req, res) => {
   try {
     const { id } = req.params;
