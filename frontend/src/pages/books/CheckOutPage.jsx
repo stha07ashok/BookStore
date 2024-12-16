@@ -59,27 +59,33 @@ const CheckOutPage = () => {
 
   return (
     <section>
-      <div className="min-h-screen p-6 bg-gray-100 flex items-center justify-center">
-        <div className="container max-w-screen-lg mx-auto">
+      <div className="min-h-screen p-6 bg-gray-100 flex items-center justify-center  bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+        <div className="container max-w-screen-lg mx-auto  ">
           <div>
             <div>
-              <h2 className="font-semibold text-xl text-gray-600 mb-2">
+              <h2 className="font-semibold text-xl text-gray-600 mb-2 dark:text-white">
                 Cash On Delevary
               </h2>
-              <p className="text-gray-500 mb-2">Total Price: ${totalPrice}</p>
-              <p className="text-gray-500 mb-6">
+              <p className="text-gray-500 mb-2 dark:text-white">
+                Total Price: ${totalPrice}
+              </p>
+              <p className="text-gray-500 mb-6 dark:text-white">
                 Items:{cartItems.length > 0 ? cartItems.length : 0}
               </p>
             </div>
 
-            <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
+            <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6  bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
               <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3 my-8"
               >
-                <div className="text-gray-600">
-                  <p className="font-medium text-lg">Personal Details</p>
-                  <p>Please fill out all the fields.</p>
+                <div className="text-gray-600  ">
+                  <p className="font-medium text-lg dark:text-white">
+                    Personal Details
+                  </p>
+                  <p className="dark:text-white">
+                    Please fill out all the fields.
+                  </p>
                 </div>
 
                 <div className="lg:col-span-2">
