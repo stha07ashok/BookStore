@@ -2,32 +2,52 @@ import React from "react";
 import footerLogo from "../assets/footer-logo.png";
 
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { TfiEmail } from "react-icons/tfi";
+import { BsFillTelephoneFill } from "react-icons/bs";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-10 px-4">
+    <footer className=" text-black py-10 px-4 border-t-2 border-black shadow-md">
       {/* Top Section */}
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+      <div className="container mx-auto flex flex-col md:flex-row justify-between  gap-8">
         {/* Left Side - Logo and Nav */}
-        <div className="md:w-1/2 w-full">
+
+        <div className="md:w-1/2 w-full flex gap-3">
           <img src={footerLogo} alt="Logo" className="mb-5 w-36" />
+
+          <div>
+            <p className="text-3xl font-bold text-justify">
+              Welcome to the Book Hub System – Your Gateway to Easy Buying and
+              Selling of Books!
+            </p>
+            <p className="text-justify">
+              Discover a seamless platform designed for book lovers to buy and
+              sell new books with ease. Whether you're looking to expand your
+              personal library or share your latest finds, our user-friendly
+              interface ensures a smooth experience.
+            </p>
+          </div>
         </div>
 
-        {/* Right Side - Newsletter */}
-        <div className="md:w-1/2 w-full">
-          <p className="mb-4">
-            Subscribe to our newsletter to receive the latest updates, news, and
-            offers!
-          </p>
-          <div className="flex">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="w-full px-4 py-2 rounded-l-md text-black"
-            />
-            <button className="bg-primary px-6 py-2 rounded-r-md hover:bg-primary-dark">
-              Subscribe
-            </button>
+        {/* center - Newsletter */}
+        <div className="flex flex-col gap-2 ">
+          <p className="text-3xl font-bold">Quick Links</p>
+          <Link to="/">Home</Link>
+          <Link to="/cart">Cart page</Link>
+          <Link to="/orders">Orders</Link>
+        </div>
+
+        {/* right side */}
+        <div className="flex flex-col gap-2">
+          <p className="text-3xl font-bold">Contact Us</p>
+          <div className="flex items-center space-x-1 dark:text-white">
+            <TfiEmail />
+            <span>: thebookhub@gmail.com</span>
+          </div>
+          <div className="flex items-center space-x-1 dark:text-white">
+            <BsFillTelephoneFill />
+            <span>: 01-32234232, 9845225675</span>
           </div>
         </div>
       </div>
