@@ -4,7 +4,7 @@ import { FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 
-const Login = () => {
+const Login = ({ darkMode }) => {
   const [message, setMessage] = useState("");
 
   const { loginUser, signInWithGoogle } = useAuth();
@@ -12,7 +12,6 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
@@ -39,13 +38,20 @@ const Login = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-120px)] flex justify-center items-center ">
-      <div className="w-full max-w-sm mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div
+      className={`h-[calc(100vh-120px)] flex justify-center items-center   ${
+        darkMode ? "bg-gray-900 text-white" : "text-wjote"
+      }`}
+    >
+      <div className="w-full max-w-sm mx-auto bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4 border-2 border-black  dark:border-white">
         <h2 className="text-xl font-semibold mb-4">Please Login</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
-            <label className="block text-gray-700" htmlFor="email">
+            <label
+              className="block text-gray-700 dark:text-gray-300"
+              htmlFor="email"
+            >
               Email
             </label>
             <input
@@ -54,11 +60,14 @@ const Login = () => {
               name="email"
               id="email"
               placeholder="Email Address"
-              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow"
+              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow dark:bg-gray-700 dark:text-white"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700" htmlFor="password">
+            <label
+              className="block text-gray-700 dark:text-gray-300"
+              htmlFor="password"
+            >
               Password
             </label>
             <input
@@ -67,7 +76,7 @@ const Login = () => {
               name="password"
               id="password"
               placeholder="Password"
-              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow"
+              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow dark:bg-gray-700 dark:text-white"
             />
           </div>
           {message && (
@@ -75,7 +84,7 @@ const Login = () => {
           )}
           <div>
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded focus:outline-none">
-              Login{" "}
+              Login
             </button>
           </div>
         </form>
@@ -96,7 +105,7 @@ const Login = () => {
           </button>
         </div>
 
-        <p className="mt-5 text-center text-gray-500 text-xs">
+        <p className="mt-5 text-center text-gray-500 text-xs dark:text-gray-400">
           ©2025 Book Store. All rights reserved.
         </p>
       </div>

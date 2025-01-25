@@ -59,7 +59,7 @@ const CheckOutPage = () => {
 
   return (
     <section>
-      <div className="min-h-screen p-6 bg-gray-100 flex items-center justify-center  bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+      <div className="min-h-screen p-6  flex items-center justify-center  bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
         <div className="container max-w-screen-lg mx-auto  ">
           <div>
             <div>
@@ -74,7 +74,7 @@ const CheckOutPage = () => {
               </p>
             </div>
 
-            <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6  bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+            <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6 dark:bg-gray-900 text-gray-900 dark:text-white border-2 border-black dark:border-white">
               <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3 my-8"
@@ -97,7 +97,7 @@ const CheckOutPage = () => {
                         type="text"
                         name="name"
                         id="name"
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full  dark:bg-black dark:text-white dark:border-white"
                       />
                     </div>
 
@@ -108,7 +108,7 @@ const CheckOutPage = () => {
                         name="email"
                         id="email"
                         disabled
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full  dark:bg-black dark:text-white dark:border-white"
                         defaultValue={currentUser?.email}
                         placeholder="email@domain.com"
                       />
@@ -120,7 +120,7 @@ const CheckOutPage = () => {
                         type="number"
                         name="phone"
                         id="phone"
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full  dark:bg-black dark:text-white dark:border-white"
                         placeholder="+977 98********"
                       />
                     </div>
@@ -132,8 +132,8 @@ const CheckOutPage = () => {
                         type="text"
                         name="address"
                         id="address"
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        placeholder=""
+                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full  dark:bg-black dark:text-white dark:border-white"
+                        placeholder="Address"
                       />
                     </div>
 
@@ -144,8 +144,8 @@ const CheckOutPage = () => {
                         type="text"
                         name="city"
                         id="city"
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        placeholder=""
+                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full  dark:bg-black dark:text-white dark:border-white"
+                        placeholder="City"
                       />
                     </div>
 
@@ -157,41 +157,8 @@ const CheckOutPage = () => {
                           name="country"
                           id="country"
                           placeholder="Country"
-                          className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
+                          className="h-10 border-2 border-black mt-1 rounded px-4 w-full  dark:bg-black dark:text-white dark:border-white"
                         />
-                        <button
-                          tabIndex="-1"
-                          className="cursor-pointer outline-none focus:outline-none transition-all text-gray-300 hover:text-red-600"
-                        >
-                          <svg
-                            className="w-4 h-4 mx-2 fill-current"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                          </svg>
-                        </button>
-                        <button
-                          tabIndex="-1"
-                          className="cursor-pointer outline-none focus:outline-none border-l border-gray-200 transition-all text-gray-300 hover:text-blue-600"
-                        >
-                          <svg
-                            className="w-4 h-4 mx-2 fill-current"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <polyline points="18 15 12 9 6 15"></polyline>
-                          </svg>
-                        </button>
                       </div>
                     </div>
 
@@ -203,38 +170,8 @@ const CheckOutPage = () => {
                           name="state"
                           id="state"
                           placeholder="State"
-                          className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
+                          className="h-10 border-2 border-black mt-1 rounded px-4 w-full  dark:bg-black dark:text-white dark:border-white"
                         />
-                        <button className="cursor-pointer outline-none focus:outline-none transition-all text-gray-300 hover:text-red-600">
-                          <svg
-                            className="w-4 h-4 mx-2 fill-current"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                          </svg>
-                        </button>
-                        <button
-                          tabIndex="-1"
-                          className="cursor-pointer outline-none focus:outline-none border-l border-gray-200 transition-all text-gray-300 hover:text-blue-600"
-                        >
-                          <svg
-                            className="w-4 h-4 mx-2 fill-current"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <polyline points="18 15 12 9 6 15"></polyline>
-                          </svg>
-                        </button>
                       </div>
                     </div>
 
@@ -245,8 +182,8 @@ const CheckOutPage = () => {
                         type="text"
                         name="zipcode"
                         id="zipcode"
-                        className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        placeholder=""
+                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full  dark:bg-black dark:text-white dark:border-white"
+                        placeholder="Zipcode"
                       />
                     </div>
 

@@ -1,4 +1,4 @@
-const Book = require("./book.model");
+const Book = require("./book.model.js");
 
 const postABook = async (req, res) => {
   try {

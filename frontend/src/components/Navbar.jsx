@@ -7,9 +7,9 @@ import avatarImg from "../assets/avatar.png";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useAuth } from "../context/AuthContext";
+import Sidebar from "./sidebar";
 
 const navigation = [
-  { name: "Dashboard", href: "/dashboard" },
   { name: "Orders", href: "/orders" },
   { name: "Cart Page", href: "/cart" },
   { name: "Check Out", href: "/checkout" },
@@ -17,74 +17,98 @@ const navigation = [
 
 const Navbar = ({ darkMode, toggleDarkMode }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // New state for sidebar visibility
 
   const cartItems = useSelector((state) => state.cart.cartItems);
-
   const { currentUser, logout } = useAuth();
 
   const handleLogOut = () => {
     logout();
   };
 
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   return (
     <header
-      className={`max-w-screen-2xl mx-auto px-4 py-6 ${
+      className={`mx-auto px-4 py-4 border-b-2 border-black shadow-md dark:border-white ${
         darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
       }`}
     >
-      <nav className="flex justify-between items-center">
+      <nav className="flex justify-between items-center sm:px-14 px-4">
         {/* Left side */}
-        <div className="flex items-center md:gap-16 gap-4">
+        <div className="flex items-center gap-4 sm:gap-8">
           <Link to="/">
-            <HiMiniBars3CenterLeft className="size-6" />
+            <img src="/fav-icon.png" alt="favicon" />
           </Link>
 
           {/* Search input */}
-          <div className="relative sm:w-72 w-40 space-x-2">
+          <div className="relative w-40 sm:w-72">
             <IoSearchOutline
-              className={`absolute inline-block left-3 inset-y-2 ${
+              className={`absolute left-3 inset-y-2 ${
                 darkMode ? "text-gray-400" : "text-gray-600"
               }`}
             />
-
             <input
               type="text"
               placeholder="Search here"
-              className={`${
+              className={`w-full py-1 px-6 sm:px-8 rounded-md focus:outline-none ${
                 darkMode
                   ? "bg-gray-800 text-white"
                   : "bg-[#EAEAEA] text-gray-900"
-              } w-full py-1 md:px-8 px-6 rounded-md focus:outline-none`}
+              }`}
             />
           </div>
         </div>
 
         {/* Right side */}
-        <div className="relative flex items-center md:space-x-3 space-x-2">
-          {/* Theme toggle */}
+        <div className="hidden md:flex items-center gap-4 sm:gap-6 relative">
+          {/* Sell Link */}
+          <Link
+            to="/sell"
+            className="p-1 sm:px-6 px-4 flex items-center border-2 border-black dark:border-white rounded-md shadow-md"
+          >
+            Sell
+          </Link>
+
+          {/* Cart */}
+          <Link
+            to="/cart"
+            className={`p-1 sm:px-6 px-4 flex items-center rounded-md border-2 border-black shadow-md ${
+              darkMode ? "text-white dark:border-white" : "text-black"
+            }`}
+          >
+            <HiOutlineShoppingCart />
+            <span className="text-sm font-semibold ml-1">
+              {cartItems.length > 0 ? cartItems.length : "0"}
+            </span>
+          </Link>
+
+          {/* Theme Toggle */}
           <button
             onClick={toggleDarkMode}
-            className="p-2 rounded-md bg-gray-200 dark:bg-gray-500"
+            className="p-2 rounded-md dark:text-white"
           >
             {darkMode ? (
-              <HiOutlineSun className="text-yellow-400 size-6" />
+              <HiOutlineSun className="w-6 h-6" />
             ) : (
-              <HiOutlineMoon className="text-gray-600 size-6" />
+              <HiOutlineMoon className="w-6 h-6 text-gray-600" />
             )}
           </button>
 
-          {/* User actions */}
+          {/* User Actions */}
           <div className="relative">
             {currentUser ? (
               <>
                 <button
-                  className="btn btn-outline-primary p-0"
+                  className="p-0"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   <img
                     src={avatarImg}
                     alt="User Avatar"
-                    className={`size-7 rounded-full ${
+                    className={`w-6 h-6 sm:w-6 sm:h-6 rounded-full ${
                       currentUser ? "ring-2 ring-blue-500" : ""
                     }`}
                   />
@@ -125,26 +149,19 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
               </>
             ) : (
               <Link to="/login">
-                <HiOutlineUser className="size-6" />
+                <HiOutlineUser className="w-6 h-6" />
               </Link>
             )}
           </div>
-          <Link
-            to="/cart"
-            className={`bg-primary p-1 sm:px-6 px-2 flex items-center rounded-sm ${
-              darkMode ? "text-white" : "text-black"
-            }`}
-          >
-            <HiOutlineShoppingCart />
-            {cartItems.length > 0 ? (
-              <span className="text-sm font-semibold sm:ml-1">
-                {cartItems.length}
-              </span>
-            ) : (
-              <span className="text-sm font-semibold sm:ml-1">0</span>
-            )}
-          </Link>
         </div>
+
+        {/* Sidebar button for medium devices and below */}
+        <button className="md:hidden p-2" onClick={toggleSidebar}>
+          <HiMiniBars3CenterLeft className="w-6 h-6" />
+        </button>
+
+        {/* Sidebar for medium devices */}
+        <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
       </nav>
     </header>
   );

@@ -15,6 +15,9 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import ManageBooks from "../pages/dashboard/manageBooks/ManageBooks";
 import UpdateBook from "../pages/dashboard/EditBook/UpdateBook";
 import AddBook from "../pages/dashboard/addBook/AddBook";
+import BookSell from "../pages/books/BookSell";
+import SoldOldBooks from "../pages/dashboard/SoldOldBooks/SoldOldBooks";
+import GetAllOrders from "../pages/dashboard/GetAllOrders/getAllOrders";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/cart",
         element: <CartPage />,
+      },
+      {
+        path: "/sell",
+        element: <BookSell />,
       },
       {
         path: "/checkout",
@@ -104,6 +111,22 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <ManageBooks />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "getallorders",
+        element: (
+          <AdminRoute>
+            <GetAllOrders />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "soldoldbooks",
+        element: (
+          <AdminRoute>
+            <SoldOldBooks />
           </AdminRoute>
         ),
       },

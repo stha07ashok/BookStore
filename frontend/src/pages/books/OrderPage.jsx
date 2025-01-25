@@ -24,12 +24,22 @@ const OrderPage = () => {
               <p className="p-1 bg-secondary text-white w-10 rounded mb-1">
                 # {index + 1}
               </p>
-              <h2 className="font-bold">Order ID: {order._id}</h2>
-              <p className="text-gray-600">Name: {order.name}</p>
-              <p className="text-gray-600">Email: {order.email}</p>
-              <p className="text-gray-600">Phone: {order.phone}</p>
-              <p className="text-gray-600">Total Price: ${order.totalPrice}</p>
-              <h3 className="font-semibold mt-2">Address:</h3>
+              <h2 className="font-bold dark:text-white">
+                Order ID: {order._id}
+              </h2>
+              <p className="text-gray-600 dark:text-white">
+                Name: {order.name}
+              </p>
+              <p className="text-gray-600 dark:text-white">
+                Email: {order.email}
+              </p>
+              <p className="text-gray-600 dark:text-white">
+                Phone: {order.phone}
+              </p>
+              <p className="text-gray-600 dark:text-white">
+                Total Price: ${order.totalPrice}
+              </p>
+              <h3 className="font-semibold mt-2 dark:text-white">Address:</h3>
               <p>
                 {" "}
                 {order.address.city}, {order.address.state},{" "}
