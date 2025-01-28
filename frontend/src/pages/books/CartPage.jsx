@@ -23,7 +23,7 @@ const CartPage = () => {
   };
 
   return (
-    <div className="flex mt-12 h-full flex-col overflow-hidden bg-white dark:bg-gray-900 shadow-xl dark:text-white">
+    <div className="flex mt-12 h-full flex-col overflow-hidden bg-white dark:bg-gray-900 shadow-xl dark:text-white border-2 border-black rounded-md dark:border-white">
       {" "}
       {/* Added dark mode support */}
       <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">

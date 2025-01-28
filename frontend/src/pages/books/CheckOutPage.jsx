@@ -59,8 +59,8 @@ const CheckOutPage = () => {
 
   return (
     <section>
-      <div className="min-h-screen p-6  flex items-center justify-center  bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
-        <div className="container max-w-screen-lg mx-auto  ">
+      <div className="min-h-screen p-6  flex items-center justify-center  bg-white dark:bg-gray-900 text-gray-900 dark:text-white ">
+        <div className="container max-w-screen-lg mx-auto ">
           <div>
             <div>
               <h2 className="font-semibold text-xl text-gray-600 mb-2 dark:text-white">
