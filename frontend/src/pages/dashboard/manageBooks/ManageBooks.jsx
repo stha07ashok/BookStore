@@ -3,7 +3,9 @@ import {
   useDeleteBookMutation,
   useFetchAllBooksQuery,
 } from "../../../redux/features/books/booksApi";
+import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const ManageBooks = () => {
   const navigate = useNavigate();
@@ -14,14 +16,25 @@ const ManageBooks = () => {
 
   // Handle deleting a book
   const handleDeleteBook = async (id) => {
-    try {
-      await deleteBook(id).unwrap();
-      alert("Book deleted successfully!");
-      refetch();
-    } catch (error) {
-      console.error("Failed to delete book:", error.message);
-      alert("Failed to delete book. Please try again.");
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteBook(id);
+          toast.success("Book deleted successfully");
+          refetch();
+        } catch (error) {
+          toast.error("Failed to delete the book");
+        }
+      }
+    });
   };
 
   // Handle navigating to Edit Book page

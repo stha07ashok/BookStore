@@ -64,10 +64,10 @@ const CheckOutPage = () => {
           <div>
             <div>
               <h2 className="font-semibold text-xl text-gray-600 mb-2 dark:text-white">
-                Cash On Delevary
+                Make payment
               </h2>
               <p className="text-gray-500 mb-2 dark:text-white">
-                Total Price: ${totalPrice}
+                Total Price: Rs.{totalPrice}
               </p>
               <p className="text-gray-500 mb-6 dark:text-white">
                 Items:{cartItems.length > 0 ? cartItems.length : 0}

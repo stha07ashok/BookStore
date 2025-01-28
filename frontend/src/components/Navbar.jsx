@@ -10,9 +10,10 @@ import { useAuth } from "../context/AuthContext";
 import Sidebar from "./sidebar";
 
 const navigation = [
-  { name: "Orders", href: "/orders" },
+  { name: "View Orders", href: "/orders" },
   { name: "Cart Page", href: "/cart" },
   { name: "Check Out", href: "/checkout" },
+  { name: "View Sold Books", href: "/sold-old-books" },
 ];
 
 const Navbar = ({ darkMode, toggleDarkMode }) => {

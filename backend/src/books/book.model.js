@@ -34,6 +34,10 @@ const bookSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    bookType: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

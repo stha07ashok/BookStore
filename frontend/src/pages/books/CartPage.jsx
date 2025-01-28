@@ -71,7 +71,7 @@ const CartPage = () => {
                           <h3>
                             <Link to="/">{product.title}</Link>
                           </h3>
-                          <p className="sm:ml-4">${product?.newPrice}</p>
+                          <p className="sm:ml-4">Rs.{product?.newPrice}</p>
                         </div>
                         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 capitalize">
                           {" "}
@@ -113,7 +113,7 @@ const CartPage = () => {
           {" "}
           {/* Text color change */}
           <p>Subtotal</p>
-          <p>${totalPrice ? totalPrice : 0}</p>
+          <p>Rs.{totalPrice ? totalPrice : 0}</p>
         </div>
         <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
           {" "}

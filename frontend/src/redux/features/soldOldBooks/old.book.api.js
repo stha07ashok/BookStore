@@ -26,8 +26,15 @@ const oldBooksApi = createApi({
       }),
       invalidatesTags: ["OldBooks"],
     }),
+    getAllSoldBooks: builder.query({
+      query: () => ({
+        url: `/sold-books`,
+        method: "GET",
+      }),
+      providesTags: ["OldBooks"],
+    }),
   }),
 });
 
-export const { useAddOldBookMutation } = oldBooksApi;
+export const { useAddOldBookMutation, useGetAllSoldBooksQuery } = oldBooksApi;
 export default oldBooksApi;

@@ -10,47 +10,63 @@ const OrderPage = () => {
     isLoading,
     isError,
   } = useGetOrderByEmailQuery(currentUser.email);
+
   if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error geting orders data</div>;
+  if (isError) return <div>Error getting orders data</div>;
+
   return (
     <div className="container mx-auto p-6">
-      <h2 className="text-2xl font-semibold mb-4">Your Orders</h2>
+      <h2 className="text-2xl font-semibold mb-6 text-center">Your Orders</h2>
+
       {orders.length === 0 ? (
-        <div>No orders found!</div>
+        <div className="text-center text-gray-500">No orders found!</div>
       ) : (
-        <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
           {orders.map((order, index) => (
-            <div key={order._id} className="border-b mb-4 pb-4">
-              <p className="p-1 bg-secondary text-white w-10 rounded mb-1">
-                # {index + 1}
+            <div
+              key={order._id}
+              className="bg-white shadow-md rounded-lg p-6 border-2 border-black dark:border-white group  dark:bg-gray-800 transition-transform transform hover:scale-105"
+            >
+              <p className="p-1 bg-secondary text-white w-10 rounded mb-2">
+                #{index + 1}
               </p>
-              <h2 className="font-bold dark:text-white">
+              <h3 className="font-bold text-lg text-black dark:text-white mb-2">
                 Order ID: {order._id}
-              </h2>
-              <p className="text-gray-600 dark:text-white">
-                Name: {order.name}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-white">
+                <span className="font-semibold">Name:</span> {order.name}
               </p>
-              <p className="text-gray-600 dark:text-white">
-                Email: {order.email}
+              <p className="text-sm text-gray-600 dark:text-white">
+                <span className="font-semibold">Email:</span> {order.email}
               </p>
-              <p className="text-gray-600 dark:text-white">
-                Phone: {order.phone}
+              <p className="text-sm text-gray-600 dark:text-white">
+                <span className="font-semibold">Phone:</span> {order.phone}
               </p>
-              <p className="text-gray-600 dark:text-white">
-                Total Price: ${order.totalPrice}
+              <p className="text-sm text-gray-600 dark:text-white">
+                <span className="font-semibold">Total Price:</span> $
+                {order.totalPrice}
               </p>
-              <h3 className="font-semibold mt-2 dark:text-white">Address:</h3>
-              <p>
-                {" "}
-                {order.address.city}, {order.address.state},{" "}
-                {order.address.country}, {order.address.zipcode}
-              </p>
-              <h3 className="font-semibold mt-2">Products Id:</h3>
-              <ul>
-                {order.productIds.map((productId) => (
-                  <li key={productId}>{productId}</li>
-                ))}
-              </ul>
+
+              <div className="mt-4">
+                <h4 className="font-semibold text-md text-black dark:text-white">
+                  Address:
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-white">
+                  {order.address.city}, {order.address.state},{" "}
+                  {order.address.country}, {order.address.zipcode}
+                </p>
+              </div>
+
+              <div className="mt-4">
+                <h4 className="font-semibold text-md text-black dark:text-white">
+                  Product Id:
+                </h4>
+                <ul className="list-disc pl-5 text-sm text-gray-600 dark:text-white">
+                  {order.productIds.map((productId) => (
+                    <li key={productId}>{productId}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
           ))}
         </div>

@@ -59,4 +59,19 @@ const sellBook = async (req, res) => {
   }
 };
 
-module.exports = { sellBook };
+const getAllSoldBooks = async (req, res) => {
+  try {
+    const books = await Book.find();
+    res.status(200).json({
+      message: "Books retrieved successfully!",
+      data: books,
+    });
+  } catch (error) {
+    console.error("Error retrieving books:", error);
+    res
+      .status(500)
+      .json({ message: "Something went wrong! Please try again." });
+  }
+};
+
+module.exports = { sellBook, getAllSoldBooks };

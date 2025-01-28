@@ -18,6 +18,7 @@ import AddBook from "../pages/dashboard/addBook/AddBook";
 import BookSell from "../pages/books/BookSell";
 import SoldOldBooks from "../pages/dashboard/SoldOldBooks/SoldOldBooks";
 import GetAllOrders from "../pages/dashboard/GetAllOrders/getAllOrders";
+import ViewSoldBook from "../pages/books/ViewSoldBook";
 
 const router = createBrowserRouter([
   {
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
       {
         path: "/book/:id",
         element: <SingleBook />,
+      },
+      {
+        path: "/sold-old-books",
+        element: <ViewSoldBook />,
       },
     ],
   },
@@ -123,7 +128,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "soldoldbooks",
+        path: "sold-old-books",
         element: (
           <AdminRoute>
             <SoldOldBooks />

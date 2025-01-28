@@ -81,6 +81,11 @@ const AddBook = () => {
             { value: "fiction", label: "Fiction" },
             { value: "horror", label: "Horror" },
             { value: "adventure", label: "Adventure" },
+            { value: "engineering", label: "Engineering" },
+            { value: "medical", label: "Medical" },
+            { value: "science", label: "Science" },
+            { value: "management", label: "Management" },
+            { value: "arts", label: "Arts" },
             // Add more options as needed
           ]}
           register={register}
@@ -115,6 +120,18 @@ const AddBook = () => {
           name="newPrice"
           type="number"
           placeholder="New Price"
+          register={register}
+        />
+
+        {/* Book Type */}
+        <SelectField
+          label="Book Type"
+          name="bookType"
+          options={[
+            { value: "", label: "Choose A Book Type" },
+            { value: "old", label: "Old " },
+            { value: "new", label: "New" },
+          ]}
           register={register}
         />
 

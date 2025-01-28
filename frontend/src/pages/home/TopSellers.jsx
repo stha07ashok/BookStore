@@ -19,6 +19,11 @@ const category = [
   "Fiction",
   "Horror",
   "Advanture",
+  "Engineering",
+  "Medical",
+  "Science",
+  "Management",
+  "Arts",
 ];
 
 const TopSellers = () => {
