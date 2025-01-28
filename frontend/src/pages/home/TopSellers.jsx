@@ -47,10 +47,10 @@ const TopSellers = () => {
           onChange={(e) => setSelectedCategory(e.target.value)}
           name="category"
           id="category"
-          className="border bg-[#EAEAEA] border-gray-250 rounded-md px-4 py-2 focus:outline-none"
+          className="border-2 border-black  border-gray-250 rounded-md px-4 py-2 focus:outline-none dark:text-white dark:border-white dark:bg-gray-800"
         >
           {category.map((category, index) => (
-            <option key={index} value={category}>
+            <option key={index} value={category} className="dark:text-white">
               {category}
             </option>
           ))}

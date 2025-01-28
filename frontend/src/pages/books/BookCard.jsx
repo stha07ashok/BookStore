@@ -14,7 +14,7 @@ const BookCard = ({ book }) => {
 
   return (
     <div className=" transition-shadow duration-300 hover:shadow-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:h-72 sm:justify-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:h-72 sm:justify-center gap-4 ">
         {/* Book Image */}
         <div className="sm:h-72 sm:flex-shrink-0 border border-gray-300 dark:border-gray-700 rounded-md">
           <Link to={`/book/${book._id}`}>
@@ -46,7 +46,10 @@ const BookCard = ({ book }) => {
           </p>
           <p className="font-medium mb-5">
             <span className=" font-normal ml-2 text-gray-500 dark:text-gray-400">
-              <span className="font-bold text-black"> Book Type: </span>
+              <span className="font-bold text-black dark:text-white">
+                {" "}
+                Book Type:{" "}
+              </span>
               {book?.bookType}
             </span>
           </p>
