@@ -20,7 +20,6 @@ const UpdateBook = () => {
     isError,
     refetch,
   } = useFetchBookByIdQuery(id);
-  // console.log(bookData)
   const [updateBook] = useUpdateBookMutation();
   const { register, handleSubmit, setValue, reset } = useForm();
   useEffect(() => {

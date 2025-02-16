@@ -33,8 +33,19 @@ const oldBooksApi = createApi({
       }),
       providesTags: ["OldBooks"],
     }),
+    deleteOldBook: builder.mutation({
+      query: (id) => ({
+        url: `/delete/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["OldBooks"],
+    }),
   }),
 });
 
-export const { useAddOldBookMutation, useGetAllSoldBooksQuery } = oldBooksApi;
+export const {
+  useAddOldBookMutation,
+  useGetAllSoldBooksQuery,
+  useDeleteOldBookMutation,
+} = oldBooksApi;
 export default oldBooksApi;

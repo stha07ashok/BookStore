@@ -79,7 +79,7 @@ const Dashboard = () => {
           </div>
           <div>
             <span className="block text-2xl font-bold">
-              ${data?.totalSales}
+              ${data?.totalSales.toFixed(4)}
             </span>
             <span className="block text-gray-500">Total Sales</span>
           </div>

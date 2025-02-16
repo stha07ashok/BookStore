@@ -16,9 +16,9 @@ import ManageBooks from "../pages/dashboard/manageBooks/ManageBooks";
 import UpdateBook from "../pages/dashboard/EditBook/UpdateBook";
 import AddBook from "../pages/dashboard/addBook/AddBook";
 import BookSell from "../pages/books/BookSell";
-import SoldOldBooks from "../pages/dashboard/SoldOldBooks/SoldOldBooks";
-import GetAllOrders from "../pages/dashboard/GetAllOrders/getAllOrders";
+import GetAllOrders from "../pages/dashboard/GetAllOrders/GetAllOrders";
 import ViewSoldBook from "../pages/books/ViewSoldBook";
+import SoldOldBooks from "../pages/dashboard/SoldOldBooks/SoldOldBooks";
 
 const router = createBrowserRouter([
   {
@@ -128,7 +128,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "sold-old-books",
+        path: "soldoldbooks",
         element: (
           <AdminRoute>
             <SoldOldBooks />
