@@ -40,6 +40,14 @@ const oldBooksApi = createApi({
       }),
       invalidatesTags: ["OldBooks"],
     }),
+    updateOldBook: builder.mutation({
+      query: ({ id, updatedBook }) => ({
+        url: `/update/${id}`,
+        method: "PUT",
+        body: updatedBook,
+      }),
+      invalidatesTags: ["OldBooks"],
+    }),
   }),
 });
 
@@ -47,5 +55,6 @@ export const {
   useAddOldBookMutation,
   useGetAllSoldBooksQuery,
   useDeleteOldBookMutation,
+  useUpdateOldBookMutation,
 } = oldBooksApi;
 export default oldBooksApi;

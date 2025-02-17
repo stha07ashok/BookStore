@@ -1,7 +1,9 @@
 import React from "react";
-import { useGetAllSoldBooksQuery } from "../../redux/features/soldOldBooks/old.book.api";
+import {
+  useGetAllSoldBooksQuery,
+  useDeleteOldBookMutation,
+} from "../../redux/features/soldOldBooks/old.book.api";
 import { useAuth } from "../../context/AuthContext";
-import { useDeleteOldBookMutation } from "../../redux/features/soldOldBooks/old.book.api";
 import Swal from "sweetalert2";
 
 const ViewSoldBook = () => {
@@ -25,12 +27,10 @@ const ViewSoldBook = () => {
     );
   }
 
-  // Safely access the data array
   const booksArray = Array.isArray(response?.data) ? response.data : [];
 
   const handleDelete = async (bookId) => {
     try {
-      // Show confirmation dialog with SweetAlert
       const result = await Swal.fire({
         title: "Are you sure?",
         text: "This will permanently delete the book from your sold list.",
@@ -40,11 +40,9 @@ const ViewSoldBook = () => {
         cancelButtonText: "No, cancel!",
       });
 
-      // Proceed if the user confirms
       if (result.isConfirmed) {
         await deleteOldBook(bookId).unwrap();
 
-        // Show success message if the deletion is successful
         Swal.fire({
           title: "Deleted!",
           text: "Your book has been deleted.",
@@ -55,13 +53,25 @@ const ViewSoldBook = () => {
     } catch (error) {
       console.error("Error deleting book:", error);
 
-      // Show error message if the deletion fails
       Swal.fire({
         title: "Error!",
         text: "Failed to delete the book. Please try again.",
         icon: "error",
         confirmButtonText: "Try Again",
       });
+    }
+  };
+
+  const getStatusTextColor = (status) => {
+    switch (status) {
+      case "Pending":
+        return "text-yellow-500";
+      case "Sold":
+        return "text-green-500";
+      case "Rejected":
+        return "text-red-500";
+      default:
+        return "text-gray-600";
     }
   };
 
@@ -83,7 +93,7 @@ const ViewSoldBook = () => {
               <img
                 src={book.image || "https://via.placeholder.com/150"}
                 alt={book.title || "Book Image"}
-                className="h-48 w-full object-cover"
+                className="h-64 w-64 object-cover"
               />
               <div className="p-4">
                 {book.title && (
@@ -108,14 +118,43 @@ const ViewSoldBook = () => {
                     {book.type}
                   </p>
                 )}
+                {book.email && (
+                  <p className="text-gray-600 dark:text-gray-300">
+                    <span className="font-semibold">Email:</span> {book.email}
+                  </p>
+                )}
+                {book.contactNumber && (
+                  <p className="text-gray-600 dark:text-gray-300">
+                    <span className="font-semibold">Contact Number:</span>{" "}
+                    {book.contactNumber}
+                  </p>
+                )}
+                {book.address && (
+                  <p className="text-gray-600 dark:text-gray-300">
+                    <span className="font-semibold">Address:</span>{" "}
+                    {book.address}
+                  </p>
+                )}
               </div>
-              <div className="my-3">
+              <div className="my-3 flex justify-between items-center">
                 <button
                   onClick={() => handleDelete(book._id)}
                   className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 transition duration-300 border-1 border-black dark:border-white"
                 >
                   Delete
                 </button>
+                <div className="mt-4 flex gap-1 items-center">
+                  <h4 className="font-semibold text-md text-black dark:text-white">
+                    Status:
+                  </h4>
+                  <span
+                    className={`text-sm font-semibold ${getStatusTextColor(
+                      book.status
+                    )}`}
+                  >
+                    {book.status}
+                  </span>
+                </div>
               </div>
             </div>
           ))}

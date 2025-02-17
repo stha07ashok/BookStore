@@ -66,7 +66,7 @@ const updateOrderStatus = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    if (!["pending", "delivered", "rejected"].includes(status)) {
+    if (!["Pending", "Delivered", "Rejected", "On the way"].includes(status)) {
       return res.status(400).json({ message: "Invalid status" });
     }
 

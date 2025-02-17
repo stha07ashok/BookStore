@@ -47,12 +47,14 @@ const OrderPage = () => {
   // Function to determine the status text color
   const getStatusTextColor = (status) => {
     switch (status) {
-      case "delivered":
+      case "Delivered":
         return "text-green-500";
-      case "rejected":
+      case "Rejected":
         return "text-red-500";
+      case "On the way":
+        return "text-violet-500";
       default:
-        return "text-yellow-500"; // pending status
+        return "text-yellow-500";
     }
   };
 
@@ -113,7 +115,7 @@ const OrderPage = () => {
               <div className="my-3 flex gap-4 flex-wrap justify-between">
                 <button
                   onClick={() => handleDelete(order._id)}
-                  className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 transition duration-300 border-1 border-black dark:border-white"
+                  className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 transition duration-300 border-1 border-black dark:border-white dark:text-black"
                   disabled={isDeleting}
                 >
                   {isDeleting ? "Deleting..." : "Delete"}
@@ -128,7 +130,7 @@ const OrderPage = () => {
                       order.status
                     )}`}
                   >
-                    {order.status || "pending"}
+                    {order.status || "Pending"}
                   </span>
                 </div>
               </div>

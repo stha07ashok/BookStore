@@ -18,8 +18,28 @@ const oldBookSchema = new mongoose.Schema({
     required: [true, "Type is required"],
   },
   image: {
-    type: String, // URL from Cloudinary
+    type: String,
     required: [true, "Image is required"],
+  },
+  status: {
+    type: String,
+    required: true,
+    enum: ["Pending", "Sold", "Rejected"],
+    default: "Pending",
+  },
+  email: {
+    type: String,
+    required: [true, "Email address is required"],
+    match: [/\S+@\S+\.\S+/, "Please enter a valid email address"],
+  },
+  contactNumber: {
+    type: String,
+    required: [true, "Contact number is required"],
+    match: [/^[0-9]{10}$/, "Please enter a valid 10-digit contact number"],
+  },
+  address: {
+    type: String,
+    required: [true, "Address is required"],
   },
 });
 

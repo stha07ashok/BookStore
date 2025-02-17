@@ -4,6 +4,7 @@ const {
   sellBook,
   getAllSoldBooks,
   deleteABook,
+  updateBookStatus,
 } = require("./old.book.controller.js");
 const upload = require("../middleware/upload.multer.js");
 
@@ -11,5 +12,6 @@ const upload = require("../middleware/upload.multer.js");
 router.post("/sell-old-book", upload.single("image"), sellBook);
 router.get("/sold-books", getAllSoldBooks);
 router.delete("/delete/:id", deleteABook);
+router.put("/update/:id", updateBookStatus);
 
 module.exports = router;

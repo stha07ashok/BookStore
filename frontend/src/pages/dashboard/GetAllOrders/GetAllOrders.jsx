@@ -21,6 +21,21 @@ const GetAllOrders = () => {
     }
   };
 
+  const getStatusTextColor = (status) => {
+    switch (status) {
+      case "Delivered":
+        return "text-green-500";
+      case "Rejected":
+        return "text-red-500";
+      case "Pending":
+        return "text-yellow-500";
+      case "On the way":
+        return "text-violet-500";
+      default:
+        return "text-gray-600";
+    }
+  };
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading orders</div>;
 
@@ -78,33 +93,44 @@ const GetAllOrders = () => {
                 </ul>
               </div>
 
+              {/* Status Display with Dynamic Text Color */}
               <div className="mt-4 flex gap-1 items-center">
                 <h4 className="font-semibold text-md text-black dark:text-white">
                   Status:
                 </h4>
-                <span className="text-sm text-gray-600 dark:text-white font-semibold">
-                  {order.status || "pending"}
+                <span
+                  className={`text-sm font-semibold ${getStatusTextColor(
+                    order.status
+                  )}`}
+                >
+                  {order.status || "Pending"}
                 </span>
               </div>
 
-              <div className="mt-4 flex gap-4 flex-wrap justify-center">
+              <div className="mt-4 gap-4 grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 justify-center">
                 <button
                   className="bg-green-500 text-white font-bold py-1 px-3 rounded hover:bg-green-700 transition duration-300"
-                  onClick={() => handleStatusChange(order._id, "delivered")}
+                  onClick={() => handleStatusChange(order._id, "Delivered")}
                 >
                   Mark as Delivered
                 </button>
                 <button
                   className="bg-red-500 text-white font-bold py-1 px-3 rounded hover:bg-red-700 transition duration-300"
-                  onClick={() => handleStatusChange(order._id, "rejected")}
+                  onClick={() => handleStatusChange(order._id, "Rejected")}
                 >
                   Reject Order
                 </button>
                 <button
                   className="bg-yellow-500 text-white font-bold py-1 px-3 rounded hover:bg-yellow-700 transition duration-300"
-                  onClick={() => handleStatusChange(order._id, "pending")}
+                  onClick={() => handleStatusChange(order._id, "Pending")}
                 >
                   Set as Pending
+                </button>
+                <button
+                  className="bg-violet-500 text-white font-bold py-1 px-3 rounded hover:bg-purple-700 transition duration-300"
+                  onClick={() => handleStatusChange(order._id, "On the way")}
+                >
+                  On the way
                 </button>
               </div>
             </div>

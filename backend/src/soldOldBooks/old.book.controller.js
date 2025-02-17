@@ -15,10 +15,20 @@ const sellBook = async (req, res) => {
       return res.status(400).json({ message: "Book photo is required" });
     }
 
-    const { title, author, edition, type } = req.body;
+    // Destructure the incoming request body
+    const { title, author, edition, type, address, contactNumber, email } =
+      req.body;
 
     // Validate required fields
-    if (!title || !author || !edition || !type) {
+    if (
+      !title ||
+      !author ||
+      !edition ||
+      !type ||
+      !address ||
+      !contactNumber ||
+      !email
+    ) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -41,6 +51,9 @@ const sellBook = async (req, res) => {
       edition,
       type,
       image: imageUrl, // Use Cloudinary URL
+      address,
+      contactNumber,
+      email,
     });
 
     // Save the book to the database
@@ -91,4 +104,31 @@ const deleteABook = async (req, res) => {
   }
 };
 
-module.exports = { sellBook, getAllSoldBooks, deleteABook };
+const updateBookStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    // Validate the status field
+    if (!["Pending", "Sold", "Rejected"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status" });
+    }
+
+    const updatedBook = await Book.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+
+    if (!updatedBook) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    res.status(200).json(updatedBook);
+  } catch (error) {
+    console.error("Error updating book status", error);
+    res.status(500).json({ message: "Failed to update book status" });
+  }
+};
+
+module.exports = { sellBook, getAllSoldBooks, deleteABook, updateBookStatus };
