@@ -3,12 +3,16 @@ import { useForm } from "react-hook-form";
 import { useAddOldBookMutation } from "../../redux/features/soldOldBooks/old.book.api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from "../../context/AuthContext";
 
 const SellBookPage = ({ darkMode }) => {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [message, setMessage] = useState("");
   const [addOldBook, { isLoading, isError }] = useAddOldBookMutation();
+
+  // Get the current logged-in user
+  const { currentUser } = useAuth();
 
   const {
     register,
@@ -24,7 +28,7 @@ const SellBookPage = ({ darkMode }) => {
     formData.append("description", data.description);
     formData.append("type", data.type);
     formData.append("image", image);
-    formData.append("email", data.email);
+    formData.append("email", data.email); // Use the email from the form
     formData.append("contactNumber", data.contactNumber);
     formData.append("address", data.address);
 
@@ -163,7 +167,8 @@ const SellBookPage = ({ darkMode }) => {
                 type="email"
                 name="email"
                 id="email"
-                placeholder="Email Address"
+                disabled
+                defaultValue={currentUser?.email} // Set the email value from currentUser
                 className="shadow appearance-none border-2 border-black dark:border-white rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow dark:bg-gray-700 dark:text-white text-black"
               />
               {errors.email && (
@@ -248,7 +253,6 @@ const SellBookPage = ({ darkMode }) => {
           </div>
 
           {/* Image Preview */}
-
           {imagePreview && (
             <div className="mb-4 space-y-2 ">
               <p className="text-black dark:text-white">Image Preview :</p>
