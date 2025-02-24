@@ -32,17 +32,17 @@ const SingleBook = () => {
         </div>
 
         <div className="mb-5 space-y-3">
-          <p className="text-gray-700 mb-2">
+          <p className="text-gray-700 mb-2 dark:text-white">
             <strong>Author:</strong> {book.author || "admin"}
           </p>
-          <p className="text-gray-700 mb-4">
+          <p className="text-gray-700 mb-4 dark:text-white">
             <strong>Published:</strong>{" "}
             {new Date(book?.createdAt).toLocaleDateString()}
           </p>
-          <p className="text-gray-700 mb-4 capitalize">
+          <p className="text-gray-700 mb-4 capitalize dark:text-white">
             <strong>Category:</strong> {book?.category}
           </p>
-          <p className="text-gray-700">
+          <p className="text-gray-700 dark:text-white">
             <strong>Description:</strong> {book.description}
           </p>
           <p className="font-medium mb-5">

@@ -21,6 +21,10 @@ const CartPage = () => {
 
   const handleClearCart = () => {
     dispatch(clearCart());
+  };
+
+  const handleCheckOut = () => {
+    dispatch(clearCart());
     navigate("/checkout");
   };
 
@@ -124,7 +128,7 @@ const CartPage = () => {
         </p>
         <div className="mt-6 flex items-center justify-center">
           <button
-            onClick={handleClearCart} // Call handleCheckout on click
+            onClick={handleCheckOut} // Call handleCheckout on click
             className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-800"
           >
             Checkout
