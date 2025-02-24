@@ -4,25 +4,28 @@ import { getImgUrl } from "../../utils/getimgurl";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/features/carts/cartSlice";
-import axios from "axios"; // Import axios for API calls
+import { useUpdateBookItemsNumberMutation } from "../../redux/features/books/booksApi";
 
 const BookCard = ({ book }) => {
   const dispatch = useDispatch();
-  const [itemsLeft, setItemsLeft] = useState(book.itemsnumber); // Local state for items count
+  const [itemsLeft, setItemsLeft] = useState(book.itemsnumber);
+  const [updateBookItemsNumber, { isLoading }] =
+    useUpdateBookItemsNumberMutation();
 
   const handleAddToCart = async (product) => {
-    if (itemsLeft >= 1) {
-      dispatch(addToCart(product));
-      setItemsLeft((prev) => prev - 1); // Update local state
+    if (itemsLeft < 1 || isLoading) return; // Prevent adding if out of stock or request is in progress
 
-      // Send request to update backend
-      try {
-        await axios.put(`/api/books/${product._id}`, {
-          itemsnumber: itemsLeft - 1,
-        });
-      } catch (error) {
-        console.error("Error updating item number:", error);
-      }
+    try {
+      // Send API request to update stock
+      await updateBookItemsNumber({
+        id: product._id,
+        itemsNumber: itemsLeft - 1,
+      }).unwrap();
+      // If API update is successful, update local state & Redux store
+      setItemsLeft((prev) => prev - 1);
+      dispatch(addToCart(product));
+    } catch (error) {
+      console.error("Error updating item number:", error);
     }
   };
 
@@ -74,18 +77,26 @@ const BookCard = ({ book }) => {
               {itemsLeft}
             </span>
           </p>
+
+          {/* Add to Cart Button */}
           <button
             onClick={() => handleAddToCart(book)}
-            disabled={itemsLeft < 1} // Disable button if no items left
+            disabled={itemsLeft < 1 || isLoading} // Disable if out of stock or request is in progress
             className={`btn-primary px-6 space-x-1 flex items-center gap-1 text-white 
               ${
-                itemsLeft < 1
+                itemsLeft < 1 || isLoading
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700"
               }`}
           >
             <FiShoppingCart />
-            <span>{itemsLeft < 1 ? "Out of Stock" : "Add to Cart"}</span>
+            <span>
+              {itemsLeft < 1
+                ? "Out of Stock"
+                : isLoading
+                ? "Adding..."
+                : "Add to Cart"}
+            </span>
           </button>
         </div>
       </div>

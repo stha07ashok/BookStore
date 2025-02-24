@@ -52,6 +52,17 @@ const booksApi = createApi({
       }),
       invalidatesTags: ["Books"],
     }),
+    updateBookItemsNumber: builder.mutation({
+      query: ({ id, itemsNumber }) => ({
+        url: `/update-items-number/${id}`,
+        method: "PUT",
+        body: { itemsNumber },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Books", id }],
+    }),
   }),
 });
 
@@ -61,5 +72,6 @@ export const {
   useAddBookMutation,
   useUpdateBookMutation,
   useDeleteBookMutation,
+  useUpdateBookItemsNumberMutation,
 } = booksApi;
 export default booksApi;

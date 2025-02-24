@@ -75,10 +75,38 @@ const deleteABook = async (req, res) => {
   }
 };
 
+const updateBookItemsNumber = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { itemsNumber } = req.body;
+
+    const book = await Book.findById(id);
+    if (!book) {
+      return res.status(404).send({ message: "Book not found!" });
+    }
+
+    if (book.itemsnumber < 1) {
+      return res.status(400).send({ message: "No more items left in stock!" });
+    }
+
+    book.itemsnumber = itemsNumber;
+    await book.save();
+
+    res.status(200).send({
+      message: "Book items number updated successfully",
+      book,
+    });
+  } catch (error) {
+    console.error("Error updating book items number", error);
+    res.status(500).send({ message: "Failed to update book items number" });
+  }
+};
+
 module.exports = {
   postABook,
   getAllBooks,
   getSingleBook,
   UpdateBook,
   deleteABook,
+  updateBookItemsNumber,
 };
