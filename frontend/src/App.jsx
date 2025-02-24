@@ -6,18 +6,24 @@ import { AuthProvide } from "./context/AuthContext";
 import { useEffect, useState } from "react";
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem("darkMode") === "true" // Load dark mode preference from localStorage
+  );
+
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
+
+    localStorage.setItem("darkMode", darkMode); // Save dark mode setting to localStorage
   }, [darkMode]);
 
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
+    setDarkMode((prevMode) => !prevMode);
   };
+
   return (
     <>
       <AuthProvide>
