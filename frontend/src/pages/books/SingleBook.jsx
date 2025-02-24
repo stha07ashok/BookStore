@@ -31,7 +31,7 @@ const SingleBook = () => {
           />
         </div>
 
-        <div className="mb-5">
+        <div className="mb-5 space-y-3">
           <p className="text-gray-700 mb-2">
             <strong>Author:</strong> {book.author || "admin"}
           </p>
@@ -44,6 +44,22 @@ const SingleBook = () => {
           </p>
           <p className="text-gray-700">
             <strong>Description:</strong> {book.description}
+          </p>
+          <p className="font-medium mb-5">
+            <span className=" font-normal ml-2 text-gray-500 dark:text-gray-400">
+              <span className="font-bold text-black dark:text-white">
+                Book Type:{" "}
+              </span>
+              {book?.bookType}
+            </span>
+          </p>
+          <p className="font-medium mb-5">
+            <span className=" font-normal ml-2 text-gray-500 dark:text-gray-400">
+              <span className="font-bold text-black dark:text-white">
+                No of items:{" "}
+              </span>
+              {book?.itemsnumber}
+            </span>
           </p>
         </div>
 
