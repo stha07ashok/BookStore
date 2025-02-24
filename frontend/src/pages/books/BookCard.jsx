@@ -21,6 +21,7 @@ const BookCard = ({ book }) => {
         id: product._id,
         itemsNumber: itemsLeft - 1,
       }).unwrap();
+
       // If API update is successful, update local state & Redux store
       setItemsLeft((prev) => prev - 1);
       dispatch(addToCart(product));
