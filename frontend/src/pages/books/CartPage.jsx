@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getImgUrl } from "../../utils/getimgurl";
 import {
   clearCart,
@@ -10,6 +10,7 @@ import {
 const CartPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const totalPrice = cartItems
     .reduce((acc, item) => acc + item.newPrice, 0)
     .toFixed(2);
@@ -20,6 +21,7 @@ const CartPage = () => {
 
   const handleClearCart = () => {
     dispatch(clearCart());
+    navigate("/checkout");
   };
 
   return (
@@ -120,13 +122,13 @@ const CartPage = () => {
           {/* Text color change */}
           Shipping and taxes calculated at checkout.
         </p>
-        <div className="mt-6">
-          <Link
-            to="/checkout"
+        <div className="mt-6 flex items-center justify-center">
+          <button
+            onClick={handleClearCart} // Call handleCheckout on click
             className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-800"
           >
             Checkout
-          </Link>
+          </button>
         </div>
         <div className="mt-6 flex justify-center text-center text-sm text-gray-500 dark:text-gray-400">
           {" "}
