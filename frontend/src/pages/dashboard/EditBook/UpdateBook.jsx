@@ -30,6 +30,8 @@ const UpdateBook = () => {
       setValue("trending", bookData.trending);
       setValue("oldPrice", bookData.oldPrice);
       setValue("newPrice", bookData.newPrice);
+      setValue("bookType", bookData.bookType);
+      setValue("itemsnumber", bookData.itemsnumber);
       setValue("coverImage", bookData.coverImage);
     }
   }, [bookData, setValue]);
@@ -42,6 +44,8 @@ const UpdateBook = () => {
       trending: data.trending,
       oldPrice: Number(data.oldPrice),
       newPrice: Number(data.newPrice),
+      bookType: data.bookType,
+      itemsnumber: data.itemsnumber,
       coverImage: data.coverImage || bookData.coverImage,
     };
     try {
@@ -98,6 +102,11 @@ const UpdateBook = () => {
             { value: "fiction", label: "Fiction" },
             { value: "horror", label: "Horror" },
             { value: "adventure", label: "Adventure" },
+            { value: "engineering", label: "Engineering" },
+            { value: "medical", label: "Medical" },
+            { value: "science", label: "Science" },
+            { value: "management", label: "Management" },
+            { value: "arts", label: "Arts" },
           ]}
           register={register}
         />
@@ -127,6 +136,25 @@ const UpdateBook = () => {
           name="newPrice"
           type="number"
           placeholder="New Price"
+          register={register}
+        />
+
+        <InputField
+          label="Number of items of book in stock"
+          name="itemsnumber"
+          type="string"
+          placeholder="no of items"
+          register={register}
+        />
+
+        <SelectField
+          label="Book Type"
+          name="bookType"
+          options={[
+            { value: "", label: "Choose A Book Type" },
+            { value: "old", label: "Old " },
+            { value: "new", label: "New" },
+          ]}
           register={register}
         />
 

@@ -79,26 +79,32 @@ const updateBookItemsNumber = async (req, res) => {
   try {
     const { id } = req.params;
     const { itemsNumber } = req.body;
-
+    // Validate itemsNumber: Ensure it's a valid number
+    if (typeof itemsNumber !== "number" || isNaN(itemsNumber)) {
+      return res.status(400).send({ message: "Invalid 'itemsNumber' value!" });
+    }
+    // Fetch the book from the database
     const book = await Book.findById(id);
     if (!book) {
       return res.status(404).send({ message: "Book not found!" });
     }
-
-    if (book.itemsnumber < 1) {
-      return res.status(400).send({ message: "No more items left in stock!" });
+    // Check if there are enough items in stock
+    if (itemsNumber < 0) {
+      return res.status(400).send({ message: "Invalid stock number!" });
     }
-
+    // Update the itemsnumber field
     book.itemsnumber = itemsNumber;
     await book.save();
-
     res.status(200).send({
       message: "Book items number updated successfully",
       book,
     });
   } catch (error) {
     console.error("Error updating book items number", error);
-    res.status(500).send({ message: "Failed to update book items number" });
+    res.status(500).send({
+      message: "Failed to update book items number",
+      error: error.message,
+    });
   }
 };
 

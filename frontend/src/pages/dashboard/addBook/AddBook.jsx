@@ -135,6 +135,14 @@ const AddBook = () => {
           register={register}
         />
 
+        <InputField
+          label="Number of items of book in stock"
+          name="itemsnumber"
+          type="string"
+          placeholder="no of items"
+          register={register}
+        />
+
         {/* Cover Image Upload */}
         <div className="mb-4">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
