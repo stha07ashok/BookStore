@@ -8,6 +8,7 @@ const {
   UpdateBook,
   deleteABook,
   updateBookItemsNumber,
+  searchBookByTitle,
 } = require("./book.controller");
 
 // frontend => backend server => controller => book schema  => database => send to server => back to the frontend
@@ -32,5 +33,7 @@ router.put("/edit/:id", UpdateBook);
 router.delete("/:id", deleteABook);
 
 router.put("/update-items-number/:id", updateBookItemsNumber);
+
+router.get("/search", searchBookByTitle);
 
 module.exports = router;

@@ -108,6 +108,35 @@ const updateBookItemsNumber = async (req, res) => {
   }
 };
 
+const searchBookByTitle = async (req, res) => {
+  try {
+    const { title } = req.query;
+
+    // If title is not provided, send a bad request response
+    if (!title) {
+      return res
+        .status(400)
+        .send({ message: "Title query parameter is required!" });
+    }
+
+    // Search for books by title (case-insensitive search)
+    const books = await Book.find({
+      title: { $regex: title, $options: "i" }, // Use regular expression for case-insensitive search
+    });
+
+    if (books.length === 0) {
+      return res
+        .status(404)
+        .send({ message: "No books found with that title!" });
+    }
+
+    res.status(200).send(books);
+  } catch (error) {
+    console.error("Error searching for books by title", error);
+    res.status(500).send({ message: "Failed to search for books" });
+  }
+};
+
 module.exports = {
   postABook,
   getAllBooks,
@@ -115,4 +144,5 @@ module.exports = {
   UpdateBook,
   deleteABook,
   updateBookItemsNumber,
+  searchBookByTitle,
 };
