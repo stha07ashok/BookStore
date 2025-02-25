@@ -4,10 +4,11 @@ import { IoSearchOutline } from "react-icons/io5";
 import { HiOutlineUser, HiOutlineSun, HiOutlineMoon } from "react-icons/hi";
 
 import avatarImg from "../assets/avatar.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAuth } from "../context/AuthContext";
 import Sidebar from "./sidebar";
+import { useSearchBookByTitleQuery } from "../redux/features/books/booksApi";
 
 const navigation = [
   { name: "View Orders", href: "/orders" },
@@ -20,6 +21,9 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false); // New state for sidebar visibility
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+
   const cartItems = useSelector((state) => state.cart.cartItems);
   const { currentUser, logout } = useAuth();
 
@@ -30,6 +34,19 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
+
+  const {
+    data: searchResults,
+    isLoading,
+    isError,
+    error,
+  } = useSearchBookByTitleQuery(searchQuery, {
+    skip: !searchQuery,
+  });
+
+  useEffect(() => {
+    setIsSearching(isLoading);
+  }, [isLoading]);
 
   return (
     <header
@@ -54,15 +71,58 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
             <input
               type="text"
               placeholder="Search here"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)} // Update searchQuery state
               className={`w-full py-1 px-6 sm:px-8 rounded-md focus:outline-none ${
                 darkMode
                   ? "bg-gray-800 text-white"
                   : "bg-[#EAEAEA] text-gray-900"
               }`}
             />
+
+            {/* Show search results if there are any */}
+            {searchQuery &&
+            !isSearching &&
+            searchResults &&
+            searchResults.length > 0 ? (
+              <div
+                className={`absolute top-full left-0 w-full mt-2 p-2 shadow-md rounded-md ${
+                  darkMode ? "text-white bg-gray-800" : "bg-white"
+                }`}
+              >
+                <ul>
+                  {searchResults.map((book) => (
+                    <li
+                      key={book._id}
+                      className="p-2 hover:bg-indigo-100 dark:hover:bg-gray-800 cursor-pointer transition-all"
+                    >
+                      <Link
+                        to={`/book/${book._id}`}
+                        className={`text-sm ${
+                          darkMode ? "text-white" : "text-gray-700"
+                        }`}
+                        onClick={() => {
+                          setSearchQuery(""); // Clear the search query
+                          setIsDropdownOpen(false); // Close the dropdown if it's open
+                        }}
+                      >
+                        {book.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : searchQuery && !isSearching && searchResults?.length === 0 ? (
+              <div
+                className={`absolute top-full left-0 w-full mt-2 p-2 shadow-md rounded-md ${
+                  darkMode ? "text-white bg-gray-800" : "bg-white"
+                }`}
+              >
+                <p className="p-2 text-sm text-gray-500">Book not found</p>
+              </div>
+            ) : null}
           </div>
         </div>
-
         {/* Right side */}
         <div className="hidden md:flex items-center gap-4 sm:gap-6 relative">
           {/* Sell Link */}

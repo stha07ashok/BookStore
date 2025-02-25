@@ -17,6 +17,8 @@ const {
 // put/patch = when edit or update something
 // delete = when delete something
 
+router.get("/search", searchBookByTitle);
+
 // post a book
 router.post("/create-book", postABook);
 
@@ -33,7 +35,5 @@ router.put("/edit/:id", UpdateBook);
 router.delete("/:id", deleteABook);
 
 router.put("/update-items-number/:id", updateBookItemsNumber);
-
-router.get("/search", searchBookByTitle);
 
 module.exports = router;

@@ -63,6 +63,14 @@ const booksApi = createApi({
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Books", id }],
     }),
+    searchBookByTitle: builder.query({
+      query: (title) => ({
+        url: `/search`,
+        method: "GET",
+        params: { title },
+      }),
+      providesTags: (result, error, title) => [{ type: "Books", title }],
+    }),
   }),
 });
 
@@ -73,5 +81,6 @@ export const {
   useUpdateBookMutation,
   useDeleteBookMutation,
   useUpdateBookItemsNumberMutation,
+  useSearchBookByTitleQuery,
 } = booksApi;
 export default booksApi;

@@ -110,7 +110,7 @@ const updateBookItemsNumber = async (req, res) => {
 
 const searchBookByTitle = async (req, res) => {
   try {
-    const { title } = req.query;
+    const { title } = req.query; // Expecting title query parameter
 
     // If title is not provided, send a bad request response
     if (!title) {
@@ -121,7 +121,7 @@ const searchBookByTitle = async (req, res) => {
 
     // Search for books by title (case-insensitive search)
     const books = await Book.find({
-      title: { $regex: title, $options: "i" }, // Use regular expression for case-insensitive search
+      title: { $regex: title, $options: "i" }, // Case-insensitive search
     });
 
     if (books.length === 0) {
