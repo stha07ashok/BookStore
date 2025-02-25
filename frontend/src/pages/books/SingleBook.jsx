@@ -89,7 +89,7 @@ const SingleBook = () => {
           className={`btn-primary px-6 space-x-1 flex items-center gap-1 text-white 
             ${
               itemsLeft < 1 || isUpdating
-                ? "bg-gray-400 cursor-not-allowed"
+                ? "bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 cursor-not-allowed"
                 : "bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700"
             }`}
         >
