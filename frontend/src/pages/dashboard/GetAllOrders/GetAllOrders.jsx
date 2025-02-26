@@ -2,11 +2,13 @@ import React, { useEffect } from "react";
 import {
   useGetAllOrdersQuery,
   useUpdateOrderStatusMutation,
+  useDeleteOrderMutation,
 } from "../../../redux/features/orders/ordersApi";
 
 const GetAllOrders = () => {
   const { data: orders = [], error, isLoading } = useGetAllOrdersQuery();
   const [updateOrderStatus] = useUpdateOrderStatusMutation();
+  const [deleteOrder] = useDeleteOrderMutation();
 
   useEffect(() => {
     console.log("Orders:", orders);
@@ -18,6 +20,15 @@ const GetAllOrders = () => {
       console.log(`Order ${orderId} status updated to ${status}`);
     } catch (error) {
       console.error("Error updating order status:", error);
+    }
+  };
+
+  const handleDelete = async (orderId) => {
+    try {
+      await deleteOrder(orderId);
+      console.log(`Order ${orderId} deleted successfully`);
+    } catch (error) {
+      console.error("Error deleting order:", error);
     }
   };
 
@@ -131,6 +142,23 @@ const GetAllOrders = () => {
                   onClick={() => handleStatusChange(order._id, "On the way")}
                 >
                   On the way
+                </button>
+              </div>
+
+              {/* Delete Button - Only if status is "Delivered" or "Rejected" */}
+              <div className="mt-4">
+                <button
+                  onClick={() => handleDelete(order._id)}
+                  className={`w-full text-white font-bold py-2 px-4 rounded transition duration-300 ${
+                    order.status === "Delivered" || order.status === "Rejected"
+                      ? "bg-red-500 hover:bg-red-700"
+                      : "bg-gray-400 cursor-not-allowed"
+                  }`}
+                  disabled={
+                    order.status !== "Delivered" && order.status !== "Rejected"
+                  }
+                >
+                  Delete
                 </button>
               </div>
             </div>

@@ -2,11 +2,13 @@ import React from "react";
 import {
   useGetAllSoldBooksQuery,
   useUpdateOldBookMutation,
+  useDeleteOldBookMutation, // Import delete mutation
 } from "../../../redux/features/soldOldBooks/old.book.api";
 
 const SoldOldBooks = () => {
   const { data: response, error, isLoading } = useGetAllSoldBooksQuery();
   const [updateOldBook] = useUpdateOldBookMutation();
+  const [deleteOldBook] = useDeleteOldBookMutation(); // Define delete function
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading sold books</div>;
@@ -18,6 +20,10 @@ const SoldOldBooks = () => {
     await updateOldBook({ id, updatedBook: { status: newStatus } });
   };
 
+  const handleDelete = async (id) => {
+    await deleteOldBook(id);
+  };
+
   const getStatusTextColor = (status) => {
     switch (status) {
       case "Pending":
@@ -26,6 +32,8 @@ const SoldOldBooks = () => {
         return "text-green-500";
       case "Rejected":
         return "text-red-500";
+      case "Processing":
+        return "text-violet-500";
       default:
         return "text-gray-600";
     }
@@ -124,6 +132,27 @@ const SoldOldBooks = () => {
                     className="bg-red-500 text-white px-3 py-1 rounded"
                   >
                     Rejected
+                  </button>
+                  <button
+                    onClick={() => handleStatusChange(book._id, "Processing")}
+                    className="bg-violet-500 text-white px-3 py-1 rounded"
+                  >
+                    Processing
+                  </button>
+                </div>
+
+                {/* Delete Button - Only if status is "Sold" */}
+                <div className="mt-4">
+                  <button
+                    onClick={() => handleDelete(book._id)}
+                    className={`w-full text-white font-bold py-2 px-4 rounded transition duration-300 ${
+                      book.status === "Sold"
+                        ? "bg-red-500 hover:bg-red-700"
+                        : "bg-gray-400 cursor-not-allowed"
+                    }`}
+                    disabled={book.status !== "Sold"}
+                  >
+                    Delete
                   </button>
                 </div>
               </div>

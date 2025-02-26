@@ -112,16 +112,22 @@ const OrderPage = () => {
                 </ul>
               </div>
 
-              <div className="my-3 flex gap-4 flex-wrap justify-between">
+              <div className="my-3 flex justify-between items-center">
+                {/* Delete Button */}
                 <button
                   onClick={() => handleDelete(order._id)}
-                  className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 transition duration-300 border-1 border-black dark:border-white dark:text-black"
-                  disabled={isDeleting}
+                  className={`text-white font-bold py-2 px-4 rounded transition duration-300 border-1 border-black dark:border-white ${
+                    order.status === "On the way"
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-red-500 hover:bg-red-700"
+                  }`}
+                  disabled={order.status === "On the way"}
                 >
                   {isDeleting ? "Deleting..." : "Delete"}
                 </button>
 
-                <div className="mt-4 flex gap-1 items-center">
+                {/* Status Display */}
+                <div className="flex gap-1 items-center">
                   <h4 className="font-semibold text-md text-black dark:text-white">
                     Status:
                   </h4>
@@ -134,6 +140,18 @@ const OrderPage = () => {
                   </span>
                 </div>
               </div>
+
+              {/* Note for "On the way" Status */}
+              {order.status === "On the way" && (
+                <p className="text-xs text-gray-500 mt-2 text-center">
+                  If you want to delete this order, please contact the store
+                  directly at{" "}
+                  <span className="font-semibold text-black dark:text-white">
+                    9866149959
+                  </span>
+                  .
+                </p>
+              )}
             </div>
           ))}
         </div>

@@ -70,6 +70,8 @@ const ViewSoldBook = () => {
         return "text-green-500";
       case "Rejected":
         return "text-red-500";
+      case "Processing":
+        return "text-violet-500";
       default:
         return "text-gray-600";
     }
@@ -137,13 +139,21 @@ const ViewSoldBook = () => {
                 )}
               </div>
               <div className="my-3 flex justify-between items-center">
+                {/* Delete Button */}
                 <button
                   onClick={() => handleDelete(book._id)}
-                  className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 transition duration-300 border-1 border-black dark:border-white"
+                  className={`text-white font-bold py-2 px-4 rounded transition duration-300 border-1 border-black dark:border-white ${
+                    book.status === "Processing"
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-red-500 hover:bg-red-700"
+                  }`}
+                  disabled={book.status === "Processing"}
                 >
                   Delete
                 </button>
-                <div className="mt-4 flex gap-1 items-center">
+
+                {/* Status Display */}
+                <div className="flex gap-1 items-center">
                   <h4 className="font-semibold text-md text-black dark:text-white">
                     Status:
                   </h4>
@@ -156,6 +166,18 @@ const ViewSoldBook = () => {
                   </span>
                 </div>
               </div>
+
+              {/* Note for Processing Status */}
+              {book.status === "Processing" && (
+                <p className="text-xs dark:text-white-500 mt-2 text-center">
+                  <span className="font-bold">Note:</span> If you want to delete
+                  this book, please contact the store directly at{" "}
+                  <span className="font-semibold text-black dark:text-white">
+                    9866149959
+                  </span>
+                  .
+                </p>
+              )}
             </div>
           ))}
         </div>

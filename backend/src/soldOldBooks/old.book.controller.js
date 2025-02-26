@@ -110,7 +110,7 @@ const updateBookStatus = async (req, res) => {
     const { status } = req.body;
 
     // Validate the status field
-    if (!["Pending", "Sold", "Rejected"].includes(status)) {
+    if (!["Pending", "Sold", "Rejected", "Processing"].includes(status)) {
       return res.status(400).json({ message: "Invalid status" });
     }
 

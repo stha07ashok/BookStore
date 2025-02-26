@@ -24,7 +24,7 @@ const oldBookSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: ["Pending", "Sold", "Rejected"],
+    enum: ["Pending", "Sold", "Rejected", "Processing"],
     default: "Pending",
   },
   email: {
