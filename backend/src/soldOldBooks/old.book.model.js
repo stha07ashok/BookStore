@@ -42,5 +42,5 @@ const oldBookSchema = new mongoose.Schema({
     required: [true, "Address is required"],
   },
 });
-
-module.exports = mongoose.model("oldSoldBook", oldBookSchema);
+const soldOldBooks = mongoose.model("oldSoldBook", oldBookSchema);
+module.exports = soldOldBooks;

@@ -28,7 +28,7 @@ const SellBookPage = ({ darkMode }) => {
     formData.append("description", data.description);
     formData.append("type", data.type);
     formData.append("image", image);
-    formData.append("email", data.email); // Use the email from the form
+    formData.append("email", currentUser?.email);
     formData.append("contactNumber", data.contactNumber);
     formData.append("address", data.address);
 
@@ -163,12 +163,14 @@ const SellBookPage = ({ darkMode }) => {
                 Email Address:
               </label>
               <input
-                {...register("email", { required: "Email is required" })}
+                {...register("email", {
+                  required: currentUser ? false : "Email is required",
+                })}
                 type="email"
                 name="email"
                 id="email"
                 disabled
-                defaultValue={currentUser?.email} // Set the email value from currentUser
+                defaultValue={currentUser ? currentUser.email : ""}
                 className="shadow appearance-none border-2 border-black dark:border-white rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow dark:bg-gray-700 dark:text-white text-black"
               />
               {errors.email && (
