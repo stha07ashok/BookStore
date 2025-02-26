@@ -15,6 +15,7 @@ const navigation = [
   { name: "Cart Page", href: "/cart" },
   { name: "Check Out", href: "/checkout" },
   { name: "View Sold Books", href: "/sold-old-books" },
+  { name: "History", href: "/history" },
 ];
 
 const Navbar = ({ darkMode, toggleDarkMode }) => {

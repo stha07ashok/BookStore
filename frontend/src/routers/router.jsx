@@ -19,6 +19,7 @@ import BookSell from "../pages/books/BookSell";
 import GetAllOrders from "../pages/dashboard/GetAllOrders/GetAllOrders";
 import ViewSoldBook from "../pages/books/ViewSoldBook";
 import SoldOldBooks from "../pages/dashboard/SoldOldBooks/SoldOldBooks";
+import History from "../pages/books/History";
 
 const router = createBrowserRouter([
   {
@@ -71,7 +72,20 @@ const router = createBrowserRouter([
       },
       {
         path: "/sold-old-books",
-        element: <ViewSoldBook />,
+        element: (
+          <PrivateRoute>
+            {" "}
+            <ViewSoldBook />,
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/history",
+        element: (
+          <PrivateRoute>
+            <History />,
+          </PrivateRoute>
+        ),
       },
     ],
   },
