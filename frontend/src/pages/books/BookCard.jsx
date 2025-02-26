@@ -95,7 +95,7 @@ const BookCard = ({ book }) => {
             className={`w-full sm:w-auto py-2 px-4 text-sm sm:text-base flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 
               ${
                 itemsLeft < 1 || isLoading
-                  ? "bg-gray-400 dark:bg-gray-600 cursor-not-allowed"
+                  ? "bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 cursor-not-allowed"
                   : "bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700"
               } text-white`}
           >
