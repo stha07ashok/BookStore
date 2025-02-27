@@ -17,6 +17,7 @@ const ordersApi = createApi({
         credentials: "include",
       }),
     }),
+
     getOrderByEmail: builder.query({
       query: (email) => ({
         url: `/email/${email}`,

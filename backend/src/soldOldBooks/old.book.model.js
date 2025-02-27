@@ -42,6 +42,10 @@ const oldBookSchema = new mongoose.Schema(
       type: String,
       required: [true, "Address is required"],
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

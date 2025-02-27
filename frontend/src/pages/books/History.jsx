@@ -1,5 +1,5 @@
 import React from "react";
-import { useGetOrderByEmailQuery } from "../../redux/features/orders/ordersApi";
+import { useGetAllOrdersQuery } from "../../redux/features/orders/ordersApi";
 import { useGetAllSoldBooksQuery } from "../../redux/features/soldOldBooks/old.book.api";
 import { useAuth } from "../../context/AuthContext";
 import Swal from "sweetalert2";
@@ -11,7 +11,7 @@ const HistoryPage = () => {
     data: orders = [],
     isLoading: isOrdersLoading,
     isError: ordersError,
-  } = useGetOrderByEmailQuery(currentUser.email);
+  } = useGetAllOrdersQuery(currentUser.email);
 
   const {
     data: soldBooks = [],
@@ -78,13 +78,15 @@ const HistoryPage = () => {
       itemType: "Order",
       details: order,
       date: order.createdAt,
+      isDeleted: order.isDeleted,
       handleDelete: () => handleDeleteOrder(order._id),
     })),
+
     ...soldBooks.data.map((book) => ({
       _id: `sold-book-${book._id}`,
       itemType: "Sold Book",
       details: book,
-      date: book.soldDate, // Optional: If you still want to show the sold date
+      date: book.createdAt,
       handleDelete: () => handleDeleteSoldBook(book._id),
     })),
   ];
@@ -110,7 +112,7 @@ const HistoryPage = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h2 className="text-2xl font-semibold mb-6 text-center ">Your History</h2>
+      <h2 className="text-2xl font-semibold mb-6 text-center">Your History</h2>
 
       {combinedHistory.length === 0 ? (
         <div className="text-center text-gray-500">No history available</div>

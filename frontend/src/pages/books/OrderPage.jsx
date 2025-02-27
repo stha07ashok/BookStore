@@ -11,18 +11,28 @@ const OrderPage = () => {
     data: orders = [],
     isLoading,
     isError,
-  } = useGetOrderByEmailQuery(currentUser.email);
+  } = useGetOrderByEmailQuery(encodeURIComponent(currentUser.email));
 
   const [deleteOrder, { isLoading: isDeleting }] = useDeleteOrderMutation();
 
   if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error getting orders data</div>;
 
+  if (isError) {
+    return <div>No Order Found!!</div>;
+  }
+
+  const activeOrders = orders.filter((order) => !order.isDeleted);
+
+  if (activeOrders.length === 0) {
+    return (
+      <div className="flex items-center justify-center">No orders found!</div>
+    );
+  }
   const handleDelete = async (orderId) => {
     try {
       const result = await Swal.fire({
         title: "Are you sure?",
-        text: "This action cannot be undone!",
+        text: "This action will delete the order!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d33",
@@ -39,8 +49,8 @@ const OrderPage = () => {
         );
       }
     } catch (error) {
-      console.error("Error deleting order:", error);
-      Swal.fire("Error", "Failed to delete the order", "error");
+      console.error("Error hiding order:", error);
+      Swal.fire("Error", "Failed to hide the order", "error");
     }
   };
 
@@ -62,11 +72,11 @@ const OrderPage = () => {
     <div className="container mx-auto p-6">
       <h2 className="text-2xl font-semibold mb-6 text-center">Your Orders</h2>
 
-      {orders.length === 0 ? (
-        <div className="text-center text-gray-500">No orders found!</div>
+      {activeOrders.length === 0 ? (
+        <div className="text-center text-gray-500">No active orders found!</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {orders.map((order, index) => (
+          {activeOrders.map((order, index) => (
             <div
               key={order._id}
               className="bg-white shadow-md rounded-lg p-6 border-2 border-gray-300 dark:border-white group dark:bg-gray-800 transition-transform transform hover:scale-105"
