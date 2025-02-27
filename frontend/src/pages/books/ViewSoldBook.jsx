@@ -90,7 +90,7 @@ const ViewSoldBook = () => {
           {booksArray.map((book, index) => (
             <div
               key={book._id || index}
-              className="bg-white shadow-md rounded-lg p-6 border-2 border-black dark:border-white group dark:bg-gray-800 transition-transform transform hover:scale-105"
+              className="bg-white shadow-md rounded-lg p-6 border-2 border-gray-300 dark:border-white group dark:bg-gray-800 transition-transform transform hover:scale-105"
             >
               <img
                 src={book.image || "https://via.placeholder.com/150"}

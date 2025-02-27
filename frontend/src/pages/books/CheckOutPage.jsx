@@ -74,7 +74,7 @@ const CheckOutPage = () => {
               </p>
             </div>
 
-            <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6 dark:bg-gray-900 text-gray-900 dark:text-white border-2 border-black dark:border-white">
+            <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6 dark:bg-gray-900 text-gray-900 dark:text-white border-2 border-gray-300 dark:border-white">
               <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3 my-8"

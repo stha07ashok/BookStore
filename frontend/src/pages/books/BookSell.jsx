@@ -56,7 +56,7 @@ const SellBookPage = ({ darkMode }) => {
       }`}
     >
       <ToastContainer position="top-right" autoClose={3000} />
-      <div className="w-full max-w-3xl mx-auto bg-white dark:bg-gray-800 shadow-md rounded px-4 sm:px-8 my-4 sm:my-8 border-2 border-black dark:border-white">
+      <div className="w-full max-w-3xl mx-auto bg-white dark:bg-gray-800 shadow-md rounded px-4 sm:px-8 my-4 sm:my-8 border-2 border-gray-300 dark:border-white">
         <h2 className="text-xl font-semibold mb-4 text-black dark:text-white mt-2 text-center">
           Sell Your Book
         </h2>

@@ -69,7 +69,7 @@ const OrderPage = () => {
           {orders.map((order, index) => (
             <div
               key={order._id}
-              className="bg-white shadow-md rounded-lg p-6 border-2 border-black dark:border-white group dark:bg-gray-800 transition-transform transform hover:scale-105"
+              className="bg-white shadow-md rounded-lg p-6 border-2 border-gray-300 dark:border-white group dark:bg-gray-800 transition-transform transform hover:scale-105"
             >
               <p className="p-1 bg-secondary text-white w-10 rounded mb-2">
                 #{index + 1}
