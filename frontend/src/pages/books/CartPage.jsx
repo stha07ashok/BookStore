@@ -6,14 +6,14 @@ import {
   clearCart,
   removeFromCart,
 } from "../../redux/features/carts/cartSlice";
-import { useUpdateBookItemsNumberMutation } from "../../redux/features/books/booksApi"; // Add API hook to update stock
+import { useUpdateBookItemsNumberMutation } from "../../redux/features/books/booksApi";
 
 const CartPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [updateBookItemsNumber, { isLoading }] =
-    useUpdateBookItemsNumberMutation(); // Hook to update stock
+    useUpdateBookItemsNumberMutation();
 
   const totalPrice = cartItems
     .reduce((acc, item) => acc + item.newPrice, 0)
@@ -21,7 +21,6 @@ const CartPage = () => {
 
   const handleRemoveFromCart = async (product) => {
     try {
-      // Ensure the product.itemsNumber is a valid number
       const newStock =
         product.itemsNumber !== undefined && product.itemsNumber !== null
           ? product.itemsNumber + 1 // Add 1 to the stock

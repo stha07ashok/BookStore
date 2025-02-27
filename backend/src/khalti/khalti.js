@@ -1,5 +1,7 @@
 const axios = require("axios");
 
+require("dotenv").config();
+
 // Function to verify Khalti Payment
 async function verifyKhaltiPayment(pidx) {
   const headersList = {

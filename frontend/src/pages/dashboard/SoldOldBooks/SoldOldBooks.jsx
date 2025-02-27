@@ -146,7 +146,7 @@ const SoldOldBooks = () => {
                     onClick={() => handleDelete(book._id)}
                     className={`w-full text-white font-bold py-2 px-4 rounded transition duration-300 ${
                       book.status === "Sold" || book.status == "Rejected"
-                        ? "bg-red-500 hover:bg-red-700"
+                        ? "bg-orange-500 hover:bg-orange-700"
                         : "bg-gray-400 cursor-not-allowed"
                     }`}
                     disabled={book.status !== "Sold"}

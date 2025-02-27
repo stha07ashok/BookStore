@@ -1,79 +1,176 @@
 import React from "react";
-import {
-  useClearAllHistoryMutation,
-  useDeleteHistoryMutation,
-  useFetchHistoryQuery,
-} from "../../redux/features/history/historyApi";
+import { useGetOrderByEmailQuery } from "../../redux/features/orders/ordersApi";
+import { useGetAllSoldBooksQuery } from "../../redux/features/soldOldBooks/old.book.api";
+import { useAuth } from "../../context/AuthContext";
+import Swal from "sweetalert2";
 
 const HistoryPage = () => {
-  // Fetch history records
-  const { data: history = [], error, isLoading } = useFetchHistoryQuery();
-  const [deleteHistory] = useDeleteHistoryMutation();
-  const [clearAllHistory] = useClearAllHistoryMutation();
+  const { currentUser } = useAuth();
 
-  // Handle delete of a specific history record
-  const handleDeleteHistory = async (historyId) => {
+  const {
+    data: orders = [],
+    isLoading: isOrdersLoading,
+    isError: ordersError,
+  } = useGetOrderByEmailQuery(currentUser.email);
+
+  const {
+    data: soldBooks = [],
+    isLoading: isSoldBooksLoading,
+    isError: soldBooksError,
+  } = useGetAllSoldBooksQuery(currentUser.email);
+
+  // Log to debug data
+  console.log("Orders:", orders);
+  console.log("Sold Books:", soldBooks);
+
+  if (isOrdersLoading || isSoldBooksLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (ordersError || soldBooksError) {
+    console.log("Orders Error:", ordersError);
+    console.log("Sold Books Error:", soldBooksError);
+    return <div>Error loading data</div>;
+  }
+
+  const handleDeleteOrder = async (orderId) => {
     try {
-      await deleteHistory(historyId).unwrap();
-      console.log(`History with ID ${historyId} deleted`);
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "This action cannot be undone!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!",
+      });
+
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your order has been deleted.", "success");
+      }
     } catch (error) {
-      console.error("Error deleting history:", error);
+      Swal.fire("Error", "Failed to delete the order", "error");
     }
   };
 
-  // Handle clearing all history records
-  const handleClearAllHistory = async () => {
+  const handleDeleteSoldBook = async (bookId) => {
     try {
-      await clearAllHistory().unwrap();
-      console.log("All history cleared");
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "This will permanently delete the book from your sold list.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+      });
+
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your book has been deleted.", "success");
+      }
     } catch (error) {
-      console.error("Error clearing all history:", error);
+      Swal.fire("Error", "Failed to delete the book", "error");
     }
   };
 
-  // Loading and error states
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading history</div>;
+  const combinedHistory = [
+    ...orders.map((order) => ({
+      _id: `order-${order._id}`,
+      itemType: "Order",
+      details: order,
+      date: order.createdAt,
+      handleDelete: () => handleDeleteOrder(order._id),
+    })),
+    ...soldBooks.data.map((book) => ({
+      _id: `sold-book-${book._id}`,
+      itemType: "Sold Book",
+      details: book,
+      date: book.soldDate, // Optional: If you still want to show the sold date
+      handleDelete: () => handleDeleteSoldBook(book._id),
+    })),
+  ];
+
+  const getStatusTextColor = (status) => {
+    switch (status) {
+      case "Delivered":
+        return "text-green-700";
+      case "Rejected":
+        return "text-red-700";
+      case "Pending":
+        return "text-yellow-700";
+      case "On the way":
+        return "text-violet-700";
+      case "Sold":
+        return "text-green-700";
+      case "Processing":
+        return "text-violet-700";
+      default:
+        return "text-gray-700";
+    }
+  };
 
   return (
     <div className="container mx-auto p-6">
-      <h2 className="text-2xl font-semibold mb-6 text-center">Your History</h2>
+      <h2 className="text-2xl font-semibold mb-6 text-center ">Your History</h2>
 
-      {/* Flex container for the button, aligned to the right */}
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={handleClearAllHistory}
-          className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700"
-        >
-          Clear All History
-        </button>
-      </div>
-
-      {/* Show history records */}
-      {history.length === 0 ? (
+      {combinedHistory.length === 0 ? (
         <div className="text-center text-gray-500">No history available</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {history.map((record) => (
+          {combinedHistory.map((record) => (
             <div
               key={record._id}
-              className="bg-white shadow-md rounded-lg p-6 border-2 border-gray-300 dark:border-white"
+              className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 border-2 border-gray-300 dark:border-white"
             >
-              {/* Card content */}
-              <h3 className="font-semibold text-lg">{record.itemType}</h3>
-              <pre className="text-sm mt-2">
-                {JSON.stringify(record.actionDetails, null, 2)}
-              </pre>
-              <p className="text-sm text-gray-600 mt-4">
-                Action Date: {new Date(record.actionDate).toLocaleString()}
-              </p>
+              <h3 className="font-semibold text-lg text-gray-800 dark:text-white">
+                {record.itemType}
+              </h3>
+              {record.itemType === "Order" ? (
+                <div className="text-sm mt-2 text-gray-800 dark:text-white">
+                  <p>
+                    <strong>Name:</strong> {record.details.name}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {record.details.email}
+                  </p>
+                  <p>
+                    <strong>Phone:</strong> {record.details.phone}
+                  </p>
+                  <p>
+                    <strong>Address:</strong>{" "}
+                    {`${record.details.address.city}, ${record.details.address.state}, ${record.details.address.country}, ${record.details.address.zipcode}`}
+                  </p>
+                  <p>
+                    <strong>Status:</strong>{" "}
+                    <span className={getStatusTextColor(record.details.status)}>
+                      {record.details.status}
+                    </span>
+                  </p>
+                </div>
+              ) : (
+                <div className="text-sm mt-2 text-gray-800 dark:text-white">
+                  <p>
+                    <strong>Book Title:</strong> {record.details.title}
+                  </p>
+                  <p>
+                    <strong>Author:</strong> {record.details.author}
+                  </p>
+                  <p>
+                    <strong>Status:</strong>{" "}
+                    <span className={getStatusTextColor(record.details.status)}>
+                      {record.details.status}
+                    </span>
+                  </p>
+                </div>
+              )}
 
-              {/* Delete button for individual record */}
+              <p className="text-sm text-gray-600 mt-4 dark:text-white">
+                Date: {new Date(record.date).toLocaleString()}
+              </p>
               <button
-                onClick={() => handleDeleteHistory(record._id)}
+                onClick={record.handleDelete}
                 className="bg-red-500 text-white py-1 px-3 rounded mt-4 hover:bg-red-700"
               >
-                Delete History
+                Delete
               </button>
             </div>
           ))}

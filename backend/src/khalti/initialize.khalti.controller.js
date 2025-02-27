@@ -1,46 +1,86 @@
+const mongoose = require("mongoose");
 const { initializeKhaltiPayment, verifyKhaltiPayment } = require("./khalti");
 const PurchasedItem = require("./purchased.item.model");
 const Payment = require("./payment.model");
 const Item = require("./item.model");
 
+require("dotenv").config();
+
 const initializeKhalti = async (req, res) => {
   try {
-    const { itemId, totalPrice, website_url } = req.body;
-    const itemData = await Item.findOne({
-      _id: itemId,
-      price: Number(totalPrice),
-    });
+    const { id, totalPrice, website_url } = req.body;
 
-    if (!itemData) {
-      return res.status(400).send({
+    const parsedPrice = Number(totalPrice);
+    console.log("Parsed Price:", parsedPrice);
+
+    // Validate price value
+    if (isNaN(parsedPrice) || parsedPrice <= 0) {
+      return res.status(400).json({
         success: false,
-        message: "item not found",
+        message: "Invalid price value",
       });
     }
 
-    const purchasedItemData = await PurchasedItem.create({
-      item: itemId,
-      paymentMethod: "khalti",
-      totalPrice: totalPrice * 100,
+    console.log("Searching for item with ID:", id);
+    console.log("Searching for item with Price:", parsedPrice);
+
+    // Query the database for the item with the correct ID and price
+    const itemData = await Item.findOne({
+      _id: new mongoose.Types.ObjectId(id),
+      newPrice: parsedPrice,
     });
 
-    const paymentInitate = await initializeKhaltiPayment({
-      amount: totalPrice * 100,
-      purchase_order_id: purchasedItemData._id,
-      purchase_order_name: itemData.name,
-      return_url: `${process.env.BACKEND_URI}/complete-khalti-payment`,
-      website_url,
+    if (!itemData) {
+      console.log("Item not found with ID:", id);
+      return res.status(400).json({
+        success: false,
+        message: "Item not found",
+      });
+    }
+
+    console.log("Item found:", itemData);
+
+    // Create the purchased item entry in the database
+    const purchasedItemData = await PurchasedItem.create({
+      item: id,
+      paymentMethod: "khalti",
+      totalPrice: parsedPrice,
+    });
+
+    const purchaseOrderId = purchasedItemData._id.toString(); // Convert ObjectId to string
+
+    // Log the payment initialization request details
+    const amountInCents = parsedPrice * 100;
+    console.log("Khalti Payment Request:", {
+      amount: amountInCents,
+      purchase_order_id: purchaseOrderId,
+      purchase_order_name: itemData.title,
+      return_url: `${process.env.KHALTI_GATEWAY_URL}/complete-khalti-payment`,
+      website_url: website_url,
+    });
+
+    // Call the Khalti payment initialization function
+    const paymentInitiate = await initializeKhaltiPayment({
+      amount: amountInCents, // Convert to cents for Khalti payment
+      purchase_order_id: purchaseOrderId,
+      purchase_order_name: itemData.title,
+      return_url: `${process.env.KHALTI_GATEWAY_URL}/complete-khalti-payment`,
+      website_url: website_url,
     });
 
     res.json({
       success: true,
       purchasedItemData,
-      payment: paymentInitate,
+      payment: paymentInitiate,
     });
   } catch (error) {
-    res.json({
+    // Log any errors for debugging purposes
+    console.error("Error initializing Khalti payment:", error);
+
+    res.status(500).json({
       success: false,
-      error,
+      message: "An error occurred",
+      error: error.message,
     });
   }
 };
@@ -58,7 +98,13 @@ const completePayment = async (req, res) => {
   } = req.query;
 
   try {
+    // Log the query parameters to verify the data being sent
+    console.log("Complete Payment Query Params:", req.query);
+
     const paymentInfo = await verifyKhaltiPayment(pidx);
+
+    // Log the payment verification response to help with debugging
+    console.log("Payment Info from Khalti:", paymentInfo);
 
     // Check if payment is completed and details match
     if (
@@ -74,7 +120,7 @@ const completePayment = async (req, res) => {
     }
 
     // Check if payment done in valid item
-    const purchasedItemData = await PurchasedItem.find({
+    const purchasedItemData = await PurchasedItem.findOne({
       _id: purchase_order_id,
       totalPrice: amount,
     });
@@ -85,18 +131,15 @@ const completePayment = async (req, res) => {
         message: "Purchased data not found",
       });
     }
-    // updating purchase record
-    await PurchasedItem.findByIdAndUpdate(
-      purchase_order_id,
 
-      {
-        $set: {
-          status: "completed",
-        },
-      }
-    );
+    // Updating purchase record to "completed"
+    await PurchasedItem.findByIdAndUpdate(purchase_order_id, {
+      $set: {
+        status: "completed",
+      },
+    });
 
-    // Create a new payment record
+    // Create a new payment record in the Payment collection
     const paymentData = await Payment.create({
       pidx,
       transactionId: transaction_id,
@@ -115,11 +158,11 @@ const completePayment = async (req, res) => {
       paymentData,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error in completePayment:", error);
     res.status(500).json({
       success: false,
       message: "An error occurred",
-      error,
+      error: error.message,
     });
   }
 };

@@ -26,7 +26,6 @@ const userRoutes = require("./src/users/user.route");
 const adminRoutes = require("./src/stats/admin.stats");
 const soldOldBooksRoutes = require("./src/soldOldBooks/old.book.routes.js");
 const khaltiRoutes = require("./src/khalti/khalti.router.js");
-const historyRoutes = require("./src/history/history.routes.js");
 
 app.use("/api/books", bookRoutes);
 app.use("/api/orders", orderRoutes);
@@ -34,7 +33,6 @@ app.use("/api/auth", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/sellbook", soldOldBooksRoutes);
 app.use("/api/khalti", khaltiRoutes);
-app.use("/api/history", historyRoutes);
 
 async function main() {
   await mongoose.connect(process.env.DB_URL);
