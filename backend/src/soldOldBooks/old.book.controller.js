@@ -74,6 +74,22 @@ const sellBook = async (req, res) => {
 
 const getAllSoldBooks = async (req, res) => {
   try {
+    const books = await Book.find({ isDeleted: false });
+
+    res.status(200).json({
+      message: "Books retrieved successfully!",
+      data: books,
+    });
+  } catch (error) {
+    console.error("Error retrieving books:", error);
+    res
+      .status(500)
+      .json({ message: "Something went wrong! Please try again." });
+  }
+};
+
+const getAllSoldBooksHistory = async (req, res) => {
+  try {
     const books = await Book.find();
     res.status(200).json({
       message: "Books retrieved successfully!",
@@ -90,13 +106,20 @@ const getAllSoldBooks = async (req, res) => {
 const deleteABook = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedBook = await Book.findByIdAndDelete(id);
-    if (!deletedBook) {
+
+    const updatedBook = await Book.findByIdAndUpdate(
+      id,
+      { isDeleted: true },
+      { new: true }
+    );
+
+    if (!updatedBook) {
       return res.status(404).json({ message: "Sold Old Book not found!" });
     }
+
     res.status(200).json({
       message: "Sold Old Book deleted successfully",
-      book: deletedBook,
+      book: updatedBook,
     });
   } catch (error) {
     console.error("Error deleting book:", error);
@@ -131,4 +154,10 @@ const updateBookStatus = async (req, res) => {
   }
 };
 
-module.exports = { sellBook, getAllSoldBooks, deleteABook, updateBookStatus };
+module.exports = {
+  sellBook,
+  getAllSoldBooks,
+  deleteABook,
+  updateBookStatus,
+  getAllSoldBooksHistory,
+};

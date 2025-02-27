@@ -1,8 +1,7 @@
 import React from "react";
 import { useGetAllOrdersQuery } from "../../redux/features/orders/ordersApi";
-import { useGetAllSoldBooksQuery } from "../../redux/features/soldOldBooks/old.book.api";
+import { useGetAllSoldBooksHistoryQuery } from "../../redux/features/soldOldBooks/old.book.api";
 import { useAuth } from "../../context/AuthContext";
-import Swal from "sweetalert2";
 
 const HistoryPage = () => {
   const { currentUser } = useAuth();
@@ -17,11 +16,7 @@ const HistoryPage = () => {
     data: soldBooks = [],
     isLoading: isSoldBooksLoading,
     isError: soldBooksError,
-  } = useGetAllSoldBooksQuery(currentUser.email);
-
-  // Log to debug data
-  console.log("Orders:", orders);
-  console.log("Sold Books:", soldBooks);
+  } = useGetAllSoldBooksHistoryQuery(currentUser.email);
 
   if (isOrdersLoading || isSoldBooksLoading) {
     return <div>Loading...</div>;
@@ -33,49 +28,10 @@ const HistoryPage = () => {
     return <div>Error loading data</div>;
   }
 
-  const handleDeleteOrder = async (orderId) => {
-    try {
-      const result = await Swal.fire({
-        title: "Are you sure?",
-        text: "This action cannot be undone!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Yes, delete it!",
-      });
-
-      if (result.isConfirmed) {
-        Swal.fire("Deleted!", "Your order has been deleted.", "success");
-      }
-    } catch (error) {
-      Swal.fire("Error", "Failed to delete the order", "error");
-    }
-  };
-
-  const handleDeleteSoldBook = async (bookId) => {
-    try {
-      const result = await Swal.fire({
-        title: "Are you sure?",
-        text: "This will permanently delete the book from your sold list.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel!",
-      });
-
-      if (result.isConfirmed) {
-        Swal.fire("Deleted!", "Your book has been deleted.", "success");
-      }
-    } catch (error) {
-      Swal.fire("Error", "Failed to delete the book", "error");
-    }
-  };
-
   const combinedHistory = [
     ...orders.map((order) => ({
       _id: `order-${order._id}`,
-      itemType: "Order",
+      itemType: "Your Order",
       details: order,
       date: order.createdAt,
       isDeleted: order.isDeleted,
@@ -84,7 +40,7 @@ const HistoryPage = () => {
 
     ...soldBooks.data.map((book) => ({
       _id: `sold-book-${book._id}`,
-      itemType: "Sold Book",
+      itemType: "Your Sold Book",
       details: book,
       date: book.createdAt,
       handleDelete: () => handleDeleteSoldBook(book._id),
@@ -126,7 +82,7 @@ const HistoryPage = () => {
               <h3 className="font-semibold text-lg text-gray-800 dark:text-white">
                 {record.itemType}
               </h3>
-              {record.itemType === "Order" ? (
+              {record.itemType === "Your Order" ? (
                 <div className="text-sm mt-2 text-gray-800 dark:text-white">
                   <p>
                     <strong>Name:</strong> {record.details.name}
@@ -168,12 +124,6 @@ const HistoryPage = () => {
               <p className="text-sm text-gray-600 mt-4 dark:text-white">
                 Date: {new Date(record.date).toLocaleString()}
               </p>
-              <button
-                onClick={record.handleDelete}
-                className="bg-red-500 text-white py-1 px-3 rounded mt-4 hover:bg-red-700"
-              >
-                Delete
-              </button>
             </div>
           ))}
         </div>

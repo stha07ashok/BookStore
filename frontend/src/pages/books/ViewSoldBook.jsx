@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   useGetAllSoldBooksQuery,
   useDeleteOldBookMutation,
@@ -17,6 +17,16 @@ const ViewSoldBook = () => {
 
   const [deleteOldBook] = useDeleteOldBookMutation();
 
+  // State to manage the books array
+  const [booksArray, setBooksArray] = useState([]);
+
+  // Update the booksArray when the data is fetched
+  useEffect(() => {
+    if (response?.data) {
+      setBooksArray(response.data);
+    }
+  }, [response]);
+
   if (isLoading) return <div className="text-center py-10">Loading...</div>;
   if (isError) {
     console.error("Error fetching sold books:", error);
@@ -26,8 +36,6 @@ const ViewSoldBook = () => {
       </div>
     );
   }
-
-  const booksArray = Array.isArray(response?.data) ? response.data : [];
 
   const handleDelete = async (bookId) => {
     try {
@@ -41,7 +49,7 @@ const ViewSoldBook = () => {
       });
 
       if (result.isConfirmed) {
-        await deleteOldBook(bookId).unwrap();
+        await deleteOldBook(bookId).unwrap(); // Delete the book in the database
 
         Swal.fire({
           title: "Deleted!",
@@ -49,6 +57,10 @@ const ViewSoldBook = () => {
           icon: "success",
           confirmButtonText: "Okay",
         });
+
+        // Update local state to remove the book from the list without fetching again
+        const updatedBooks = booksArray.filter((book) => book._id !== bookId);
+        setBooksArray(updatedBooks); // Update the local state to remove the book
       }
     } catch (error) {
       console.error("Error deleting book:", error);
