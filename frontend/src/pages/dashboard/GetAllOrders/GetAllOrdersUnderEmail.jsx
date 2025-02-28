@@ -21,7 +21,7 @@ const GetAllOrders = () => {
       return acc;
     }, {});
 
-    // Detect new orders
+    // Detect new orders (if the count has increased compared to the previous count)
     const detectedNewOrders = {};
     for (const email in currentOrderCounts) {
       // Check if the current order count is greater than the previous order count
@@ -65,7 +65,7 @@ const GetAllOrders = () => {
       {uniqueEmails.length === 0 ? (
         <div className="text-center text-gray-500">No orders found!</div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {uniqueEmails.map((email) => (
             <div
               key={email}
@@ -92,13 +92,6 @@ const GetAllOrders = () => {
                 <span className="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                   {emailOrderCounts[email]}
                 </span>
-
-                {/* Show "New!" label only if it's marked as new */}
-                {newOrders[email] && (
-                  <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                    New!
-                  </span>
-                )}
               </div>
             </div>
           ))}

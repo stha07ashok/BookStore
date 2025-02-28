@@ -34,6 +34,29 @@ const getOrderByEmail = async (req, res) => {
   }
 };
 
+const getAllOrdersByEmail = async (req, res) => {
+  try {
+    const { email } = req.params; // Use req.params instead of req.query
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    // Find all orders with the specified email, sorted by creation date
+    const orders = await Order.find({ email }).sort({ createdAt: -1 });
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No orders found" });
+    }
+
+    // Send the orders back in the response
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("Error fetching all orders", error);
+    res.status(500).json({ message: "Failed to fetch orders" });
+  }
+};
+
 const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find().sort({ createdAt: -1 });
@@ -100,9 +123,10 @@ const updateOrderStatus = async (req, res) => {
 };
 
 module.exports = {
+  getAllOrders,
   createAOrder,
   getOrderByEmail,
-  getAllOrders,
+  getAllOrdersByEmail,
   deleteOrderById,
   updateOrderStatus,
 };

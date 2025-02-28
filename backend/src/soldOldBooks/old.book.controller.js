@@ -72,26 +72,73 @@ const sellBook = async (req, res) => {
   }
 };
 
-const getAllSoldBooks = async (req, res) => {
+const getSoldBooksByEmail = async (req, res) => {
   try {
-    const books = await Book.find({ isDeleted: false });
+    const { email } = req.params; // Get the email from URL params
 
-    res.status(200).json({
-      message: "Books retrieved successfully!",
-      data: books,
+    // Ensure the database query resolves and assigns the result to soldBooks
+    const soldBooks = await Book.find({
+      email: email,
+      isDeleted: false,
     });
+
+    // Check if no books were found
+    if (!soldBooks || soldBooks.length === 0) {
+      return res.status(404).json({ message: "No books found for this email" });
+    }
+
+    // Respond with the found books
+    res.status(200).json(soldBooks);
   } catch (error) {
-    console.error("Error retrieving books:", error);
-    res
-      .status(500)
-      .json({ message: "Something went wrong! Please try again." });
+    // Log and send error response
+    console.error("Error fetching books by email:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
-const getAllSoldBooksHistory = async (req, res) => {
+const getAllSoldBooksByEmail = async (req, res) => {
   try {
-    const books = await Book.find();
-    res.status(200).json({
+    const { email } = req.params;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email parameter is missing" });
+    }
+
+    const soldBooks = await Book.find({ email }).sort({
+      createdAt: -1,
+    });
+
+    if (!soldBooks || soldBooks.length === 0) {
+      return res.status(404).json({ message: "No books found" });
+    }
+
+    res.status(200).json(soldBooks);
+  } catch (error) {
+    console.error("Error fetching books", error);
+    res.status(500).json({ message: "Failed to fetch books" });
+  }
+};
+
+const getAllSoldBooks = async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    if (!email) {
+      const books = await Book.find();
+      return res.status(200).json({
+        message: "Books retrieved successfully!",
+        data: books,
+      });
+    }
+
+    const books = await Book.find({ email: email });
+    if (books.length === 0) {
+      return res.status(404).json({
+        message: "No books found for this email address.",
+      });
+    }
+
+    return res.status(200).json({
       message: "Books retrieved successfully!",
       data: books,
     });
@@ -156,8 +203,9 @@ const updateBookStatus = async (req, res) => {
 
 module.exports = {
   sellBook,
-  getAllSoldBooks,
   deleteABook,
   updateBookStatus,
-  getAllSoldBooksHistory,
+  getAllSoldBooks,
+  getSoldBooksByEmail,
+  getAllSoldBooksByEmail,
 };

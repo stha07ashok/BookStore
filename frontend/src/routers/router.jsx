@@ -16,11 +16,12 @@ import ManageBooks from "../pages/dashboard/manageBooks/ManageBooks";
 import UpdateBook from "../pages/dashboard/EditBook/UpdateBook";
 import AddBook from "../pages/dashboard/addBook/AddBook";
 import BookSell from "../pages/books/BookSell";
-import GetAllOrders from "../pages/dashboard/GetAllOrders/GetAllOrders";
+import GetAllOrders from "../pages/dashboard/GetAllOrders/GetAllOrdersUnderEmail";
 import ViewSoldBook from "../pages/books/ViewSoldBook";
-import SoldOldBooks from "../pages/dashboard/SoldOldBooks/SoldOldBooks";
+import SoldOldBooks from "../pages/dashboard/SoldOldBooks/SoldbookEmailcard";
 import History from "../pages/books/History";
-import OrdersByEmail from "../pages/dashboard/GetAllOrders/GetOrder";
+import OrdersByEmail from "../pages/dashboard/GetAllOrders/GetOrderInEmailCard";
+import SoldBooksByEmail from "../pages/dashboard/SoldOldBooks/AllSoldBookUnderEmail";
 
 const router = createBrowserRouter([
   {
@@ -158,6 +159,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <OrdersByEmail />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "soldoldbooksbyemail/:email",
+        element: (
+          <AdminRoute>
+            <SoldBooksByEmail />
           </AdminRoute>
         ),
       },

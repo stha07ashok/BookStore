@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const Login = ({ darkMode }) => {
   const [message, setMessage] = useState("");
-
   const { loginUser, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
   const {
@@ -18,10 +18,23 @@ const Login = ({ darkMode }) => {
   const onSubmit = async (data) => {
     try {
       await loginUser(data.email, data.password);
-      alert("Login successful!");
+      // Using SweetAlert2 after successful login
+      Swal.fire({
+        title: "Login successful!",
+        text: "You have successfully logged in.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
       navigate("/");
     } catch (error) {
       setMessage("Please provide a valid email and password");
+      // Using SweetAlert2 for error handling
+      Swal.fire({
+        title: "Error",
+        text: "Invalid email or password. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
       console.error(error);
     }
   };
@@ -29,21 +42,33 @@ const Login = ({ darkMode }) => {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle();
-      alert("Login successful!");
+      // Using SweetAlert2 after Google login
+      Swal.fire({
+        title: "Login successful!",
+        text: "You have successfully logged in with Google.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
       navigate("/");
     } catch (error) {
-      alert("Google sign in failed!");
+      // Using SweetAlert2 for error handling
+      Swal.fire({
+        title: "Google Sign-In Failed",
+        text: "Google sign-in failed. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
       console.error(error);
     }
   };
 
   return (
     <div
-      className={`h-[calc(100vh-120px)] flex justify-center items-center   ${
-        darkMode ? "bg-gray-900 text-white" : "text-wjote"
+      className={`h-[calc(100vh-120px)] flex justify-center items-center ${
+        darkMode ? "bg-gray-900 text-white" : "text-black"
       }`}
     >
-      <div className="w-full max-w-sm mx-auto bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4 border-2 border-black  dark:border-white">
+      <div className="w-full max-w-sm mx-auto bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4 border-2 border-black dark:border-white">
         <h2 className="text-xl font-semibold mb-4">Please Login</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -94,7 +119,7 @@ const Login = ({ darkMode }) => {
             Register
           </Link>
         </p>
-        {/* google sign in */}
+        {/* Google sign in */}
         <div className="mt-4">
           <button
             onClick={handleGoogleSignIn}

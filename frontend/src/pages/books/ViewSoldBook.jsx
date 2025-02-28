@@ -1,79 +1,56 @@
-import React, { useState, useEffect } from "react";
-import {
-  useGetAllSoldBooksQuery,
-  useDeleteOldBookMutation,
-} from "../../redux/features/soldOldBooks/old.book.api";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import Swal from "sweetalert2";
+import {
+  useDeleteOldBookMutation,
+  useGetSoldBookByEmailQuery,
+} from "../../redux/features/soldOldBooks/old.book.api";
 
-const ViewSoldBook = () => {
+const SoldBooksPage = () => {
   const { currentUser } = useAuth();
   const {
-    data: response,
+    data: soldBooks = [],
     isLoading,
     isError,
-    error,
-  } = useGetAllSoldBooksQuery(currentUser?.email, { skip: !currentUser });
+  } = useGetSoldBookByEmailQuery(currentUser.email);
 
-  const [deleteOldBook] = useDeleteOldBookMutation();
+  const [deleteSoldBook, { isLoading: isDeleting }] =
+    useDeleteOldBookMutation(); // Corrected here
 
-  // State to manage the books array
-  const [booksArray, setBooksArray] = useState([]);
+  if (isLoading) return <div>Loading...</div>;
 
-  // Update the booksArray when the data is fetched
-  useEffect(() => {
-    if (response?.data) {
-      setBooksArray(response.data);
-    }
-  }, [response]);
+  if (isError) return <div>No Sold Books Found!</div>;
 
-  if (isLoading) return <div className="text-center py-10">Loading...</div>;
-  if (isError) {
-    console.error("Error fetching sold books:", error);
-    return (
-      <div className="text-center py-10 text-red-600">
-        Error getting sold books data
-      </div>
-    );
-  }
+  // Filter out deleted books if there's a `isDeleted` flag
+  const activeSoldBooks = soldBooks.filter((book) => !book.isDeleted);
 
   const handleDelete = async (bookId) => {
     try {
       const result = await Swal.fire({
         title: "Are you sure?",
-        text: "This will permanently delete the book from your sold list.",
+        text: "This action will delete the sold book!",
         icon: "warning",
         showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
         confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel!",
       });
 
       if (result.isConfirmed) {
-        await deleteOldBook(bookId).unwrap(); // Delete the book in the database
-
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your book has been deleted.",
-          icon: "success",
-          confirmButtonText: "Okay",
-        });
-
-        // Update local state to remove the book from the list without fetching again
-        const updatedBooks = booksArray.filter((book) => book._id !== bookId);
-        setBooksArray(updatedBooks); // Update the local state to remove the book
+        await deleteSoldBook(bookId).unwrap();
+        Swal.fire(
+          "Deleted!",
+          "Your sold book has been deleted successfully.",
+          "success"
+        );
       }
     } catch (error) {
-      console.error("Error deleting book:", error);
-
-      Swal.fire({
-        title: "Error!",
-        text: "Failed to delete the book. Please try again.",
-        icon: "error",
-        confirmButtonText: "Try Again",
-      });
+      console.error("Error hiding sold book:", error);
+      Swal.fire("Error", "Failed to hide the book", "error");
     }
   };
 
+  // Function to determine the status text color
   const getStatusTextColor = (status) => {
     switch (status) {
       case "Pending":
@@ -95,11 +72,11 @@ const ViewSoldBook = () => {
         Your Sold Books
       </h1>
 
-      {booksArray.length === 0 ? (
+      {activeSoldBooks.length === 0 ? (
         <div className="text-center text-gray-600">No sold books available</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {booksArray.map((book, index) => (
+          {activeSoldBooks.map((book, index) => (
             <div
               key={book._id || index}
               className="bg-white shadow-md rounded-lg p-6 border-2 border-gray-300 dark:border-white group dark:bg-gray-800 transition-transform transform hover:scale-105"
@@ -198,4 +175,4 @@ const ViewSoldBook = () => {
   );
 };
 
-export default ViewSoldBook;
+export default SoldBooksPage;

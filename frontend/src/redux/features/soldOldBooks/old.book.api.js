@@ -27,15 +27,8 @@ const oldBooksApi = createApi({
       invalidatesTags: ["OldBooks"],
     }),
     getAllSoldBooks: builder.query({
-      query: () => ({
-        url: `/sold-books`,
-        method: "GET",
-      }),
-      providesTags: ["OldBooks"],
-    }),
-    getAllSoldBooksHistory: builder.query({
-      query: () => ({
-        url: `/sold-books-history`,
+      query: (email) => ({
+        url: `/sold-books-history/${email}`,
         method: "GET",
       }),
       providesTags: ["OldBooks"],
@@ -55,14 +48,29 @@ const oldBooksApi = createApi({
       }),
       invalidatesTags: ["OldBooks"],
     }),
+    getSoldBookByEmail: builder.query({
+      query: (email) => ({
+        url: `/soldbooksbyemail/${email}`,
+        method: "GET",
+      }),
+      providesTags: ["OldBooks"],
+    }),
+    getAllSoldBooksByEmail: builder.query({
+      query: (email) => ({
+        url: `/allsoldbooksbyemail/${email}`,
+        method: "GET",
+      }),
+      providesTags: ["OldBooks"],
+    }),
   }),
 });
 
 export const {
   useAddOldBookMutation,
-  useGetAllSoldBooksQuery,
   useDeleteOldBookMutation,
   useUpdateOldBookMutation,
-  useGetAllSoldBooksHistoryQuery,
+  useGetAllSoldBooksQuery,
+  useGetSoldBookByEmailQuery,
+  useGetAllSoldBooksByEmailQuery,
 } = oldBooksApi;
 export default oldBooksApi;

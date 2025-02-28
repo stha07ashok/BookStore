@@ -1,52 +1,64 @@
 import React from "react";
-import { useGetAllOrdersQuery } from "../../redux/features/orders/ordersApi";
-import { useGetAllSoldBooksHistoryQuery } from "../../redux/features/soldOldBooks/old.book.api";
+import { useGetAllOrdersByEmailQuery } from "../../redux/features/orders/ordersApi";
 import { useAuth } from "../../context/AuthContext";
+import { useGetAllSoldBooksByEmailQuery } from "../../redux/features/soldOldBooks/old.book.api";
 
 const HistoryPage = () => {
   const { currentUser } = useAuth();
 
+  // Fetch orders and sold books using the updated queries
   const {
-    data: orders = [],
+    data: orders = [], // Default to an empty array if no data is returned
     isLoading: isOrdersLoading,
     isError: ordersError,
-  } = useGetAllOrdersQuery(currentUser.email);
+  } = useGetAllOrdersByEmailQuery(currentUser.email);
 
   const {
-    data: soldBooks = [],
+    data: soldBooks = [], // Default to an empty array if no data is returned
     isLoading: isSoldBooksLoading,
     isError: soldBooksError,
-  } = useGetAllSoldBooksHistoryQuery(currentUser.email);
+  } = useGetAllSoldBooksByEmailQuery(currentUser.email);
 
+  console.log("Orders: ", orders); // Debug orders data
+  console.log("Sold Books: ", soldBooks); // Debug soldBooks data
+
+  // Handle loading state
   if (isOrdersLoading || isSoldBooksLoading) {
     return <div>Loading...</div>;
   }
 
-  if (ordersError || soldBooksError) {
-    console.log("Orders Error:", ordersError);
-    console.log("Sold Books Error:", soldBooksError);
-    return <div>Error loading data</div>;
+  // Handle error states separately for orders and sold books
+  if (ordersError && soldBooksError) {
+    return <div>No History available!!</div>;
   }
 
+  // Combine orders and sold books history
   const combinedHistory = [
-    ...orders.map((order) => ({
-      _id: `order-${order._id}`,
-      itemType: "Your Order",
-      details: order,
-      date: order.createdAt,
-      isDeleted: order.isDeleted,
-      handleDelete: () => handleDeleteOrder(order._id),
-    })),
+    ...(Array.isArray(orders) && orders.length > 0 ? orders : []).map(
+      (order) => ({
+        _id: `order-${order._id}`,
+        itemType: "Your Order",
+        details: order,
+        date: order.createdAt,
+        isDeleted: order.isDeleted,
+        handleDelete: () => handleDeleteOrder(order._id),
+      })
+    ),
 
-    ...soldBooks.data.map((book) => ({
-      _id: `sold-book-${book._id}`,
-      itemType: "Your Sold Book",
-      details: book,
-      date: book.createdAt,
-      handleDelete: () => handleDeleteSoldBook(book._id),
-    })),
+    ...(Array.isArray(soldBooks) && soldBooks.length > 0 ? soldBooks : []).map(
+      (book) => ({
+        _id: `sold-book-${book._id}`,
+        itemType: "Your Sold Book",
+        details: book,
+        date: book.createdAt,
+        handleDelete: () => handleDeleteSoldBook(book._id),
+      })
+    ),
   ];
 
+  console.log("Combined History: ", combinedHistory); // Debug combined history
+
+  // Function to determine status text color
   const getStatusTextColor = (status) => {
     switch (status) {
       case "Delivered":
@@ -64,6 +76,15 @@ const HistoryPage = () => {
       default:
         return "text-gray-700";
     }
+  };
+
+  // Handle delete actions for orders and sold books
+  const handleDeleteOrder = (orderId) => {
+    console.log("Deleting order with ID:", orderId);
+  };
+
+  const handleDeleteSoldBook = (bookId) => {
+    console.log("Deleting sold book with ID:", bookId);
   };
 
   return (
@@ -111,6 +132,12 @@ const HistoryPage = () => {
                   </p>
                   <p>
                     <strong>Author:</strong> {record.details.author}
+                  </p>
+                  <p>
+                    <strong>Address:</strong> {`${record.details.address}`}
+                  </p>
+                  <p>
+                    <strong>Book Type:</strong> {record.details.type}
                   </p>
                   <p>
                     <strong>Status:</strong>{" "}

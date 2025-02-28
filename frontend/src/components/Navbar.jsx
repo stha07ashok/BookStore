@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 import { HiMiniBars3CenterLeft, HiOutlineShoppingCart } from "react-icons/hi2";
 import { IoSearchOutline } from "react-icons/io5";
 import { HiOutlineUser, HiOutlineSun, HiOutlineMoon } from "react-icons/hi";
-
 import avatarImg from "../assets/avatar.png";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAuth } from "../context/AuthContext";
 import Sidebar from "./sidebar";
 import { useSearchBookByTitleQuery } from "../redux/features/books/booksApi";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const navigation = [
   { name: "View Orders", href: "/orders" },
@@ -20,16 +20,29 @@ const navigation = [
 
 const Navbar = ({ darkMode, toggleDarkMode }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false); // New state for sidebar visibility
-
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
   const cartItems = useSelector((state) => state.cart.cartItems);
   const { currentUser, logout } = useAuth();
 
+  // Reset dropdown state when user logs in
+  useEffect(() => {
+    if (currentUser) {
+      setIsDropdownOpen(false); // Ensure dropdown is closed after login
+    }
+  }, [currentUser]);
+
   const handleLogOut = () => {
     logout();
+    // Show SweetAlert2 on logout
+    Swal.fire({
+      title: "Logged Out",
+      text: "You have successfully logged out.",
+      icon: "success",
+      confirmButtonText: "OK",
+    });
   };
 
   const toggleSidebar = () => {

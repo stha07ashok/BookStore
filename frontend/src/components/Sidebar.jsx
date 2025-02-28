@@ -12,6 +12,8 @@ const navigation = [
   { name: "Orders", href: "/orders" },
   { name: "Cart Page", href: "/cart" },
   { name: "Check Out", href: "/checkout" },
+  { name: "View Sold Books", href: "/sold-old-books" },
+  { name: "History", href: "/history" },
 ];
 
 const Sidebar = ({ isOpen, setIsOpen, darkMode, toggleDarkMode }) => {

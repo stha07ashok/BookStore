@@ -23,10 +23,8 @@ const OrderPage = () => {
 
   const activeOrders = orders.filter((order) => !order.isDeleted);
 
-  if (activeOrders.length === 0) {
-    return (
-      <div className="flex items-center justify-center">No orders found!</div>
-    );
+  if (isError) {
+    return <div className="text-center py-10 ">No Order Found!!</div>;
   }
   const handleDelete = async (orderId) => {
     try {
