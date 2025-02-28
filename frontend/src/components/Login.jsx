@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaGoogle } from "react-icons/fa";
+import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import Swal from "sweetalert2"; // Import SweetAlert2
@@ -14,6 +14,8 @@ const Login = ({ darkMode }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const [passwordVisible, setPasswordVisible] = useState(false); // State for toggling password visibility
 
   const onSubmit = async (data) => {
     try {
@@ -88,7 +90,7 @@ const Login = ({ darkMode }) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow dark:bg-gray-700 dark:text-white"
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label
               className="block text-gray-700 dark:text-gray-300"
               htmlFor="password"
@@ -97,12 +99,20 @@ const Login = ({ darkMode }) => {
             </label>
             <input
               {...register("password", { required: true })}
-              type="password"
+              type={passwordVisible ? "text" : "password"} // Toggle between text and password
               name="password"
               id="password"
               placeholder="Password"
               className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow dark:bg-gray-700 dark:text-white"
             />
+            <button
+              type="button"
+              onClick={() => setPasswordVisible(!passwordVisible)} // Toggle password visibility
+              className="absolute right-3 mt-4  transform -translate-y-1/2 text-gray-500"
+            >
+              {passwordVisible ? <FaEyeSlash /> : <FaEye />}{" "}
+              {/* Toggle eye icon */}
+            </button>
           </div>
           {message && (
             <p className="text-red-500 text-xs italic mb-3">{message}</p>

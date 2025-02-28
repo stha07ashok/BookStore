@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaGoogle } from "react-icons/fa";
+import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
@@ -17,6 +17,8 @@ const Register = ({ darkMode }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const [passwordVisible, setPasswordVisible] = useState(false); // State for toggling password visibility
 
   const onSubmit = async (data) => {
     try {
@@ -58,7 +60,7 @@ const Register = ({ darkMode }) => {
         darkMode ? "bg-gray-900 text-white" : " text-white"
       }`}
     >
-      <div className="w-full max-w-sm mx-auto bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4 border-2 border-black  dark:border-white">
+      <div className="w-full max-w-sm mx-auto bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4 border-2 border-black dark:border-white">
         <h2 className="text-xl font-semibold text-black mb-4 dark:text-white">
           Please Register
         </h2>
@@ -86,7 +88,7 @@ const Register = ({ darkMode }) => {
           </div>
 
           {/* Password Field */}
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label
               className="block text-gray-700 dark:text-gray-300"
               htmlFor="password"
@@ -95,12 +97,20 @@ const Register = ({ darkMode }) => {
             </label>
             <input
               {...register("password", { required: "Password is required" })}
-              type="password"
+              type={passwordVisible ? "text" : "password"} // Toggle between text and password
               name="password"
               id="password"
               placeholder="Password"
               className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow dark:bg-gray-700 text-black dark:text-white"
             />
+            <button
+              type="button"
+              onClick={() => setPasswordVisible(!passwordVisible)} // Toggle password visibility
+              className="absolute right-3 mt-4 transform -translate-y-1/2 text-gray-500"
+            >
+              {passwordVisible ? <FaEyeSlash /> : <FaEye />}{" "}
+              {/* Toggle eye icon */}
+            </button>
             {errors.password && (
               <p className="text-red-500 text-xs">{errors.password.message}</p>
             )}
