@@ -8,21 +8,26 @@ import { useCreateOrderMutation } from "../../redux/features/orders/ordersApi";
 
 const CheckOutPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
+  console.log("cartItems", cartItems);
+
+  // Calculate total price (each item multiplied by its quantity)
   const totalPrice = cartItems
-    .reduce((acc, item) => acc + item.newPrice, 0)
+    .reduce((acc, item) => acc + (item.newPrice * item.quantity || 0), 0)
     .toFixed(2);
+
+  // Calculate total items
+  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
   const { currentUser } = useAuth();
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
-
-  const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
   const navigate = useNavigate();
-
   const [isChecked, setIsChecked] = useState(false);
+
   const onSubmit = async (data) => {
     const newOrder = {
       name: data.name,
@@ -34,9 +39,10 @@ const CheckOutPage = () => {
         zipcode: data.zipcode,
       },
       phone: data.phone,
-      productIds: cartItems.map((item) => item?._id),
+      productIds: cartItems.map((item) => item._id),
       totalPrice: totalPrice,
     };
+
     try {
       await createOrder(newOrder).unwrap();
       Swal.fire({
@@ -50,7 +56,7 @@ const CheckOutPage = () => {
       });
       navigate("/orders");
     } catch (error) {
-      console.error("Error place an order", error);
+      console.error("Error placing an order", error);
       alert("Failed to place an order");
     }
   };
@@ -59,18 +65,18 @@ const CheckOutPage = () => {
 
   return (
     <section>
-      <div className="min-h-screen p-6  flex items-center justify-center  bg-white dark:bg-gray-900 text-gray-900 dark:text-white ">
-        <div className="container max-w-screen-lg mx-auto ">
+      <div className="min-h-screen p-6 flex items-center justify-center bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+        <div className="container max-w-screen-lg mx-auto">
           <div>
             <div>
               <h2 className="font-semibold text-xl text-gray-600 mb-2 dark:text-white">
-                Make payment
+                Make Payment
               </h2>
               <p className="text-gray-500 mb-2 dark:text-white">
                 Total Price: Rs.{totalPrice}
               </p>
               <p className="text-gray-500 mb-6 dark:text-white">
-                Items:{cartItems.length > 0 ? cartItems.length : 0}
+                Items: {totalItems > 0 ? totalItems : 0}
               </p>
             </div>
 
@@ -79,7 +85,7 @@ const CheckOutPage = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3 my-8"
               >
-                <div className="text-gray-600  ">
+                <div className="text-gray-600">
                   <p className="font-medium text-lg dark:text-white">
                     Personal Details
                   </p>
@@ -97,30 +103,31 @@ const CheckOutPage = () => {
                         type="text"
                         name="name"
                         id="name"
-                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full  dark:bg-black dark:text-white dark:border-white"
+                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full dark:bg-black dark:text-white dark:border-white"
                       />
                     </div>
 
                     <div className="md:col-span-5">
-                      <label html="email">Email Address</label>
+                      <label htmlFor="email">Email Address</label>
                       <input
                         type="text"
                         name="email"
                         id="email"
                         disabled
-                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full  dark:bg-black dark:text-white dark:border-white"
+                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full dark:bg-black dark:text-white dark:border-white"
                         defaultValue={currentUser?.email}
                         placeholder="email@domain.com"
                       />
                     </div>
+
                     <div className="md:col-span-5">
-                      <label html="phone">Phone Number</label>
+                      <label htmlFor="phone">Phone Number</label>
                       <input
                         {...register("phone", { required: true })}
                         type="number"
                         name="phone"
                         id="phone"
-                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full  dark:bg-black dark:text-white dark:border-white"
+                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full dark:bg-black dark:text-white dark:border-white"
                         placeholder="+977 98********"
                       />
                     </div>
@@ -132,7 +139,7 @@ const CheckOutPage = () => {
                         type="text"
                         name="address"
                         id="address"
-                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full  dark:bg-black dark:text-white dark:border-white"
+                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full dark:bg-black dark:text-white dark:border-white"
                         placeholder="Address"
                       />
                     </div>
@@ -144,7 +151,7 @@ const CheckOutPage = () => {
                         type="text"
                         name="city"
                         id="city"
-                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full  dark:bg-black dark:text-white dark:border-white"
+                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full dark:bg-black dark:text-white dark:border-white"
                         placeholder="City"
                       />
                     </div>
@@ -157,7 +164,7 @@ const CheckOutPage = () => {
                           name="country"
                           id="country"
                           placeholder="Country"
-                          className="h-10 border-2 border-black mt-1 rounded px-4 w-full  dark:bg-black dark:text-white dark:border-white"
+                          className="h-10 border-2 border-black mt-1 rounded px-4 w-full dark:bg-black dark:text-white dark:border-white"
                         />
                       </div>
                     </div>
@@ -170,7 +177,7 @@ const CheckOutPage = () => {
                           name="state"
                           id="state"
                           placeholder="State"
-                          className="h-10 border-2 border-black mt-1 rounded px-4 w-full  dark:bg-black dark:text-white dark:border-white"
+                          className="h-10 border-2 border-black mt-1 rounded px-4 w-full dark:bg-black dark:text-white dark:border-white"
                         />
                       </div>
                     </div>
@@ -182,7 +189,7 @@ const CheckOutPage = () => {
                         type="text"
                         name="zipcode"
                         id="zipcode"
-                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full  dark:bg-black dark:text-white dark:border-white"
+                        className="h-10 border-2 border-black mt-1 rounded px-4 w-full dark:bg-black dark:text-white dark:border-white"
                         placeholder="Zipcode"
                       />
                     </div>
@@ -196,14 +203,14 @@ const CheckOutPage = () => {
                           id="billing_same"
                           className="form-checkbox"
                         />
-                        <label htmlFor="billing_same" className="ml-2 ">
-                          I am aggree to the{" "}
+                        <label htmlFor="billing_same" className="ml-2">
+                          I agree to the{" "}
                           <Link className="underline underline-offset-2 text-blue-600">
                             Terms & Conditions
                           </Link>{" "}
                           and{" "}
                           <Link className="underline underline-offset-2 text-blue-600">
-                            Shoping Policy.
+                            Shopping Policy.
                           </Link>
                         </label>
                       </div>
@@ -213,7 +220,7 @@ const CheckOutPage = () => {
                       <div className="inline-flex items-end">
                         <button
                           disabled={!isChecked}
-                          className="bg-blue-500 hover:bg-blue-700 text-white hover font-bold py-2 px-4 rounded"
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                         >
                           Place an Order
                         </button>
