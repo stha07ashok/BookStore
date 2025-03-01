@@ -112,7 +112,7 @@ const OrdersByEmail = () => {
                 <span className="font-semibold">Phone:</span> {order.phone}
               </p>
               <p className="text-sm text-gray-600 dark:text-white">
-                <span className="font-semibold">Total Price:</span> $
+                <span className="font-semibold">Total Price:</span> Rs.
                 {order.totalPrice}
               </p>
 
