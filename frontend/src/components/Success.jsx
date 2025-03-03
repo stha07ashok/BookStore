@@ -77,7 +77,9 @@ const Success = () => {
   if (errorMessage)
     return (
       <div className="max-w-lg mx-auto p-6 border-2 border-gray-300 dark:border-white shadow-mg rounded-lg">
-        <h1 className="text-2xl font-semibold text-red-600">Payment Done!!</h1>
+        <h1 className="text-2xl font-semibold text-green-600">
+          Payment Done!!
+        </h1>
 
         <div className="mt-6 space-x-4">
           <button
@@ -88,7 +90,7 @@ const Success = () => {
           </button>
           <button
             onClick={() => navigate("/orders")}
-            className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none"
+            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none"
           >
             View Order
           </button>

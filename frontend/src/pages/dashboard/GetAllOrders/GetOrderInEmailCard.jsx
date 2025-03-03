@@ -64,11 +64,11 @@ const OrdersByEmail = () => {
   };
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading orders</div>;
+  if (error) return <div>No orders found!!!</div>;
 
   const filteredOrders = orders
     .filter((order) => order.email === email)
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Newest orders first
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   return (
     <div className="container mx-auto p-6">
@@ -114,6 +114,15 @@ const OrdersByEmail = () => {
               <p className="text-sm text-gray-600 dark:text-white">
                 <span className="font-semibold">Total Price:</span> Rs.
                 {order.totalPrice}
+              </p>
+              <p className="text-sm text-gray-600 dark:text-white ">
+                <span className="font-semibold">Payment Method:</span>{" "}
+                {order.paymentMethod}
+                {order.paymentMethod === "Esewa" && (
+                  <span className="text-green-500 font-bold ml-2">
+                    (Payment is completed!!)
+                  </span>
+                )}
               </p>
 
               <div className="mt-4">

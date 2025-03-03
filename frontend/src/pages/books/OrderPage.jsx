@@ -94,6 +94,15 @@ const OrderPage = () => {
               <p className="text-sm text-gray-600 dark:text-white">
                 <span className="font-semibold">Phone:</span> {order.phone}
               </p>
+              <p className="text-sm text-gray-600 dark:text-white ">
+                <span className="font-semibold">Payment Method:</span>{" "}
+                {order.paymentMethod}
+                {order.paymentMethod === "Esewa" && (
+                  <span className="text-green-500 font-bold ml-2">
+                    (Payment is completed!!)
+                  </span>
+                )}
+              </p>
               <p className="text-sm text-gray-600 dark:text-white">
                 <span className="font-semibold">Total Price:</span> $
                 {order.totalPrice}

@@ -41,6 +41,8 @@ const HistoryPage = () => {
         details: order,
         date: order.createdAt,
         isDeleted: order.isDeleted,
+        paymentMethod: order.paymentMethod,
+        totalPrice: order.totalPrice,
         handleDelete: () => handleDeleteOrder(order._id),
       })
     ),
@@ -119,6 +121,18 @@ const HistoryPage = () => {
                     {`${record.details.address.city}, ${record.details.address.state}, ${record.details.address.country}, ${record.details.address.zipcode}`}
                   </p>
                   <p>
+                    <strong>Payment Method:</strong>{" "}
+                    {record.details.paymentMethod}
+                    {record.details.paymentMethod === "Esewa" && (
+                      <span className="text-green-500 font-bold ml-2">
+                        (Payment is completed!!)
+                      </span>
+                    )}
+                  </p>
+                  <p>
+                    <strong>Total Price:</strong> ${record.details.totalPrice}
+                  </p>
+                  <p>
                     <strong>Status:</strong>{" "}
                     <span className={getStatusTextColor(record.details.status)}>
                       {record.details.status}
@@ -139,6 +153,7 @@ const HistoryPage = () => {
                   <p>
                     <strong>Book Type:</strong> {record.details.type}
                   </p>
+
                   <p>
                     <strong>Status:</strong>{" "}
                     <span className={getStatusTextColor(record.details.status)}>
