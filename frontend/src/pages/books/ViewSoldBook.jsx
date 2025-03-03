@@ -84,7 +84,7 @@ const SoldBooksPage = () => {
               <img
                 src={book.image || "https://via.placeholder.com/150"}
                 alt={book.title || "Book Image"}
-                className="h-64 w-64 object-cover"
+                className="h-72 w-64 object-fill"
               />
               <div className="p-4">
                 {book.title && (
