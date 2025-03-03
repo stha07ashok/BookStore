@@ -64,19 +64,19 @@ const HistoryPage = () => {
   const getStatusTextColor = (status) => {
     switch (status) {
       case "Delivered":
-        return "text-green-700";
+        return "text-green-500";
       case "Rejected":
-        return "text-red-700";
+        return "text-red-500";
       case "Pending":
-        return "text-yellow-700";
+        return "text-yellow-500";
       case "On the way":
-        return "text-violet-700";
+        return "text-violet-500";
       case "Sold":
-        return "text-green-700";
+        return "text-green-500";
       case "Processing":
-        return "text-violet-700";
+        return "text-violet-500";
       default:
-        return "text-gray-700";
+        return "text-gray-500";
     }
   };
 
@@ -134,7 +134,11 @@ const HistoryPage = () => {
                   </p>
                   <p>
                     <strong>Status:</strong>{" "}
-                    <span className={getStatusTextColor(record.details.status)}>
+                    <span
+                      className={`${getStatusTextColor(
+                        record.details.status
+                      )} font-bold`}
+                    >
                       {record.details.status}
                     </span>
                   </p>
@@ -156,7 +160,11 @@ const HistoryPage = () => {
 
                   <p>
                     <strong>Status:</strong>{" "}
-                    <span className={getStatusTextColor(record.details.status)}>
+                    <span
+                      className={`${getStatusTextColor(
+                        record.details.status
+                      )} font-bold`}
+                    >
                       {record.details.status}
                     </span>
                   </p>
