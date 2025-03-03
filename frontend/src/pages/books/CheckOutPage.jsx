@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { useAuth } from "../../context/AuthContext";
 import { useCreateOrderMutation } from "../../redux/features/orders/ordersApi";
+import { clearCart } from "../../redux/features/carts/cartSlice";
 
 const CheckOutPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -13,7 +14,6 @@ const CheckOutPage = () => {
     .toFixed(2);
 
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-
   const { currentUser } = useAuth();
   const {
     register,
@@ -22,10 +22,22 @@ const CheckOutPage = () => {
   } = useForm();
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch(); // Initialize dispatch
   const [isChecked, setIsChecked] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("");
 
   const onSubmit = async (data) => {
+    if (totalPrice === "0.00" || totalPrice === 0) {
+      Swal.fire({
+        title: "Error",
+        text: "Total amount is not available. Please check your cart.",
+        icon: "error",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#d33",
+      });
+      return; // Prevent further execution if total is 0
+    }
+
     const newOrder = {
       name: data.name,
       email: currentUser?.email,
@@ -44,6 +56,9 @@ const CheckOutPage = () => {
     try {
       // Create the order
       const orderResponse = await createOrder(newOrder).unwrap();
+
+      // Clear the cart after placing the order
+      dispatch(clearCart()); // Dispatch the clearCart action to clear the cart
 
       // If payment method is Esewa, redirect to the payment page
       if (paymentMethod === "Esewa") {
