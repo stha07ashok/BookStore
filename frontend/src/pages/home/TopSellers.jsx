@@ -57,31 +57,31 @@ const TopSellers = () => {
         </select>
       </div>
       <Swiper
-        slidesPerView={3}
+        slidesPerView={3} // Default for larger screens
         spaceBetween={30}
         navigation={true}
         breakpoints={{
           640: {
-            slidesPerView: 1,
+            slidesPerView: 2, // Show only 2 books on mobile devices
             spaceBetween: 20,
           },
           768: {
-            slidesPerView: 2,
+            slidesPerView: 2, // Show 2 books on tablets
             spaceBetween: 40,
           },
           1024: {
-            slidesPerView: 2,
+            slidesPerView: 3, // Show 3 books on larger screens
             spaceBetween: 50,
           },
           1180: {
-            slidesPerView: 3,
+            slidesPerView: 3, // Show 3 books on very large screens
             spaceBetween: 50,
           },
         }}
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        {filteredBooks.length > 0 &&
+        {filteredBooks.slice(0, 2).length > 0 &&
           filteredBooks.map((book, index) => (
             <SwiperSlide key={index}>
               <BookCard book={book} />

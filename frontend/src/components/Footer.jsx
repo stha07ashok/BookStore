@@ -13,7 +13,7 @@ const Footer = () => {
       <div className="container mx-auto flex flex-col md:flex-row justify-between  gap-8">
         {/* Left Side - Logo and Nav */}
 
-        <div className="md:w-1/2 w-full flex gap-3">
+        <div className="md:w-1/2 w-full flex flex-col md:flex-row items-center gap-3  ">
           <img src={footerLogo} alt="Logo" className="mb-5 w-36" />
 
           <div>
