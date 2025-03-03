@@ -2,20 +2,18 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../context/AuthContext";
 import Swal from "sweetalert2";
+import { useAuth } from "../../context/AuthContext";
 import { useCreateOrderMutation } from "../../redux/features/orders/ordersApi";
 
 const CheckOutPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   console.log("cartItems", cartItems);
 
-  // Calculate total price (each item multiplied by its quantity)
   const totalPrice = cartItems
     .reduce((acc, item) => acc + (item.newPrice * item.quantity || 0), 0)
     .toFixed(2);
 
-  // Calculate total items
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   const { currentUser } = useAuth();
@@ -46,18 +44,21 @@ const CheckOutPage = () => {
     try {
       await createOrder(newOrder).unwrap();
       Swal.fire({
-        title: "Confirmed Order",
-        text: "Your order placed successfully!",
-        icon: "warning",
-        showCancelButton: true,
+        title: "Order Placed",
+        text: "Your order has been placed successfully!",
+        icon: "success",
+        showCancelButton: false,
+        confirmButtonText: "Proceed to Payment",
         confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, It's Okay!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Navigate to the payment page with the total price
+          navigate("/payment-form", { state: { amount: totalPrice } });
+        }
       });
-      navigate("/orders");
     } catch (error) {
-      console.error("Error placing an order", error);
-      alert("Failed to place an order");
+      console.error("Error placing order:", error);
+      alert("Failed to place the order");
     }
   };
 

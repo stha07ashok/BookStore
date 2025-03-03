@@ -22,6 +22,9 @@ import SoldOldBooks from "../pages/dashboard/SoldOldBooks/SoldbookEmailcard";
 import History from "../pages/books/History";
 import OrdersByEmail from "../pages/dashboard/GetAllOrders/GetOrderInEmailCard";
 import SoldBooksByEmail from "../pages/dashboard/SoldOldBooks/AllSoldBookUnderEmail";
+import Success from "../components/Success";
+import Failure from "../components/Failure";
+import Paymentform from "../components/Paymentform";
 
 const router = createBrowserRouter([
   {
@@ -90,6 +93,30 @@ const router = createBrowserRouter([
           <PrivateRoute>
             <History />,
           </PrivateRoute>
+        ),
+      },
+      {
+        path: "/payment-success",
+        element: (
+          // <PrivateRoute>
+          <Success />
+          // </PrivateRoute>
+        ),
+      },
+      {
+        path: "/payment-failure",
+        element: (
+          //<PrivateRoute>
+          <Failure />
+          //</PrivateRoute>
+        ),
+      },
+      {
+        path: "/payment-form",
+        element: (
+          //  <PrivateRoute>
+          <Paymentform />
+          // </PrivateRoute>
         ),
       },
     ],
