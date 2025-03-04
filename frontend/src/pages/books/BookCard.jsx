@@ -55,9 +55,15 @@ const BookCard = ({ book }) => {
             </p>
           </div>
 
-          {/* Add to Cart Button - Hidden on Mobile & Tablet */}
-          <button className="w-full md:w-auto py-2 px-4 text-sm sm:text-base flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white hidden md:flex">
-            Add to Cart
+          <button
+            className={`w-full md:w-auto py-2 px-4 text-sm sm:text-base items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 ${
+              book.itemsnumber > 0
+                ? "bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white"
+                : "bg-gray-400 dark:bg-gray-500 text-gray-500 dark:text-gray-300 cursor-not-allowed"
+            } hidden md:flex`}
+            disabled={book.itemsnumber === 0}
+          >
+            {book.itemsnumber > 0 ? "Add to Cart" : "Out of Stock"}
           </button>
         </div>
       </div>
