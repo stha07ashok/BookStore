@@ -4,7 +4,7 @@ import { useAddOldBookMutation } from "../../redux/features/soldOldBooks/old.boo
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom"; // Importing useNavigate
+import { useNavigate } from "react-router-dom";
 
 const SellBookPage = ({ darkMode }) => {
   const [image, setImage] = useState(null);
@@ -12,10 +12,7 @@ const SellBookPage = ({ darkMode }) => {
   const [message, setMessage] = useState("");
   const [addOldBook, { isLoading, isError }] = useAddOldBookMutation();
 
-  // Get the current logged-in user
   const { currentUser } = useAuth();
-
-  // Initialize useNavigate hook for redirection
   const navigate = useNavigate();
 
   const {
@@ -39,8 +36,6 @@ const SellBookPage = ({ darkMode }) => {
     try {
       await addOldBook(formData).unwrap();
       toast.success("Your book listed successfully for sale!");
-
-      // Redirect to the page where sold books are listed
       navigate("/sold-old-books");
     } catch (error) {
       toast.error("Something went wrong! Please try again.");
