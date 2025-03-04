@@ -1,8 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { getImgUrl } from "../../utils/getimgurl";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {
+  addToCart,
+  reduceItemNumber,
+} from "../../redux/features/carts/cartSlice";
 
 const BookCard = ({ book }) => {
+  const dispatch = useDispatch();
+
+  const [itemsNumber, setItemsNumber] = useState(book.itemsnumber);
+
+  const handleAddToCart = () => {
+    if (itemsNumber > 0) {
+      const updatedItemsNumber = itemsNumber - 1;
+      setItemsNumber(updatedItemsNumber); // Instantly update the UI
+
+      // Dispatch actions to Redux
+      dispatch(addToCart({ ...book, itemsnumber: updatedItemsNumber }));
+      dispatch(reduceItemNumber({ ...book, itemsnumber: updatedItemsNumber }));
+    }
+  };
+
   return (
     <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-4 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-lg h-[300px] md:h-[320px] flex flex-col justify-between">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 items-center">
@@ -51,19 +71,21 @@ const BookCard = ({ book }) => {
               <span className="font-semibold text-gray-700 dark:text-gray-300">
                 No of items:
               </span>{" "}
-              {book.itemsnumber}
+              {itemsNumber}
             </p>
           </div>
 
+          {/* Add to Cart Button - Hidden on Mobile & Tablet */}
           <button
+            onClick={handleAddToCart}
             className={`w-full md:w-auto py-2 px-4 text-sm sm:text-base items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 ${
-              book.itemsnumber > 0
+              itemsNumber > 0
                 ? "bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white"
                 : "bg-gray-400 dark:bg-gray-500 text-gray-500 dark:text-gray-300 cursor-not-allowed"
             } hidden md:flex`}
-            disabled={book.itemsnumber === 0}
+            disabled={itemsNumber === 0}
           >
-            {book.itemsnumber > 0 ? "Add to Cart" : "Out of Stock"}
+            {itemsNumber > 0 ? "Add to Cart" : "Out of Stock"}
           </button>
         </div>
       </div>

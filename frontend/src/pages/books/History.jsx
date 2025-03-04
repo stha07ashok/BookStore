@@ -130,7 +130,7 @@ const HistoryPage = () => {
                     )}
                   </p>
                   <p>
-                    <strong>Total Price:</strong> ${record.details.totalPrice}
+                    <strong>Total Price:</strong> Rs.{record.details.totalPrice}
                   </p>
                   <p>
                     <strong>Status:</strong>{" "}
