@@ -22,14 +22,14 @@ const CartPage = () => {
     try {
       // Update stock when removing from cart
       const newStock =
-        product.itemsNumber !== undefined && product.itemsNumber !== null
-          ? product.itemsNumber + product.quantity
+        product.itemsnumber !== undefined && product.itemsnumber !== null
+          ? product.itemsnumber + product.quantity
           : product.quantity;
 
       // Update the stock for the book
       await updateBookItemsNumber({
         id: product._id,
-        itemsNumber: newStock,
+        itemsnumber: newStock,
       }).unwrap();
 
       // Remove item from the cart (the reducer updates localStorage)
@@ -39,7 +39,6 @@ const CartPage = () => {
     }
   };
 
-  // Do NOT clear the cart before navigating to checkout
   const handleCheckOut = () => {
     navigate("/checkout");
   };
@@ -49,14 +48,14 @@ const CartPage = () => {
       // Loop through each cart item to update the stock
       for (const product of cartItems) {
         const newStock =
-          product.itemsNumber !== undefined && product.itemsNumber !== null
-            ? product.itemsNumber + product.quantity
+          product.itemsnumber !== undefined && product.itemsnumber !== null
+            ? product.itemsnumber + product.quantity
             : product.quantity;
 
         // Update the stock for the book
         await updateBookItemsNumber({
           id: product._id,
-          itemsNumber: newStock,
+          itemsnumber: newStock,
         }).unwrap();
       }
 

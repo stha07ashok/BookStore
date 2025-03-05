@@ -75,13 +75,13 @@ const deleteABook = async (req, res) => {
   }
 };
 
-const updateBookItemsNumber = async (req, res) => {
+const updateBookitemsnumber = async (req, res) => {
   try {
     const { id } = req.params;
-    const { itemsNumber } = req.body;
-    // Validate itemsNumber: Ensure it's a valid number
-    if (typeof itemsNumber !== "number" || isNaN(itemsNumber)) {
-      return res.status(400).send({ message: "Invalid 'itemsNumber' value!" });
+    const { itemsnumber } = req.body;
+    // Validate itemsnumber: Ensure it's a valid number
+    if (typeof itemsnumber !== "number" || isNaN(itemsnumber)) {
+      return res.status(400).send({ message: "Invalid 'itemsnumberr' value!" });
     }
     // Fetch the book from the database
     const book = await Book.findById(id);
@@ -89,11 +89,11 @@ const updateBookItemsNumber = async (req, res) => {
       return res.status(404).send({ message: "Book not found!" });
     }
     // Check if there are enough items in stock
-    if (itemsNumber < 0) {
+    if (itemsnumber < 0) {
       return res.status(400).send({ message: "Invalid stock number!" });
     }
     // Update the itemsnumber field
-    book.itemsnumber = itemsNumber;
+    book.itemsnumber = itemsnumber;
     await book.save();
     res.status(200).send({
       message: "Book items number updated successfully",
@@ -143,6 +143,6 @@ module.exports = {
   getSingleBook,
   UpdateBook,
   deleteABook,
-  updateBookItemsNumber,
+  updateBookitemsnumber,
   searchBookByTitle,
 };
