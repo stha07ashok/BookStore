@@ -158,36 +158,68 @@ const SoldBooksByEmail = () => {
               </div>
               <div className="mt-4 gap-4 grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 justify-center">
                 <button
-                  disabled={book.isDeleted}
+                  disabled={
+                    book.isDeleted ||
+                    book.status === "Sold" ||
+                    book.status === "Rejected"
+                  }
                   className={`bg-green-500 text-white font-bold py-1 px-3 rounded hover:bg-green-700 transition duration-300 ${
-                    book.isDeleted ? "opacity-50 cursor-not-allowed" : ""
+                    book.isDeleted ||
+                    book.status === "Sold" ||
+                    book.status === "Rejected"
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
                   }`}
                   onClick={() => handleStatusChange(book._id, "Sold")}
                 >
                   Mark as Sold
                 </button>
                 <button
-                  disabled={book.isDeleted}
+                  disabled={
+                    book.isDeleted ||
+                    book.status === "Sold" ||
+                    book.status === "Rejected"
+                  }
                   className={`bg-red-500 text-white font-bold py-1 px-3 rounded hover:bg-red-700 transition duration-300 ${
-                    book.isDeleted ? "opacity-50 cursor-not-allowed" : ""
+                    book.isDeleted ||
+                    book.status === "Sold" ||
+                    book.status === "Rejected"
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
                   }`}
                   onClick={() => handleStatusChange(book._id, "Rejected")}
                 >
                   Reject
                 </button>
                 <button
-                  disabled={book.isDeleted}
+                  disabled={
+                    book.isDeleted ||
+                    book.status === "Sold" ||
+                    book.status === "Rejected"
+                  }
                   className={`bg-yellow-500 text-white font-bold py-1 px-3 rounded hover:bg-yellow-700 transition duration-300 ${
-                    book.isDeleted ? "opacity-50 cursor-not-allowed" : ""
+                    book.isDeleted ||
+                    book.status === "Sold" ||
+                    book.status === "Rejected"
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
                   }`}
                   onClick={() => handleStatusChange(book._id, "Pending")}
                 >
                   Set as Pending
                 </button>
                 <button
-                  disabled={book.isDeleted}
+                  disabled={
+                    book.isDeleted ||
+                    book.status === "Sold" ||
+                    book.status === "Rejected"
+                  }
                   className={`bg-violet-500 text-white font-bold py-1 px-3 rounded hover:bg-purple-700 transition duration-300 ${
-                    book.isDeleted ? "opacity-50 cursor-not-allowed" : ""
+                    book.isDeleted ||
+                    book.status === "Sold" ||
+                    book.status === "Rejected"
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
                   }`}
                   onClick={() => handleStatusChange(book._id, "Processing")}
                 >

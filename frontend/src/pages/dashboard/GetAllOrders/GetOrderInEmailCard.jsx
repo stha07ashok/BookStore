@@ -136,9 +136,11 @@ const OrdersByEmail = () => {
               </div>
               <div className="mt-4 gap-4 grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 justify-center">
                 <button
-                  disabled={order.isDeleted}
+                  disabled={order.isDeleted || order.status === "Delivered"}
                   className={`bg-green-500 text-white font-bold py-1 px-3 rounded hover:bg-green-700 transition duration-300 ${
-                    order.isDeleted ? "opacity-50 cursor-not-allowed" : ""
+                    order.isDeleted || order.status === "Delivered"
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
                   }`}
                   onClick={() => handleStatusChange(order._id, "Delivered")}
                 >
@@ -146,18 +148,22 @@ const OrdersByEmail = () => {
                 </button>
 
                 <button
-                  disabled={order.isDeleted}
+                  disabled={order.isDeleted || order.status === "Delivered"}
                   className={`bg-yellow-500 text-white font-bold py-1 px-3 rounded hover:bg-yellow-700 transition duration-300 ${
-                    order.isDeleted ? "opacity-50 cursor-not-allowed" : ""
+                    order.isDeleted || order.status === "Delivered"
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
                   }`}
                   onClick={() => handleStatusChange(order._id, "Pending")}
                 >
                   Set as Pending
                 </button>
                 <button
-                  disabled={order.isDeleted}
+                  disabled={order.isDeleted || order.status === "Delivered"}
                   className={`bg-violet-500 text-white font-bold py-1 px-3 rounded hover:bg-purple-700 transition duration-300 ${
-                    order.isDeleted ? "opacity-50 cursor-not-allowed" : ""
+                    order.isDeleted || order.status === "Delivered"
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
                   }`}
                   onClick={() => handleStatusChange(order._id, "On the way")}
                 >
