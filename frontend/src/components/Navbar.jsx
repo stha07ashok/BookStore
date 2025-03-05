@@ -13,7 +13,6 @@ import Swal from "sweetalert2"; // Import SweetAlert2
 const navigation = [
   { name: "View Orders", href: "/orders" },
   { name: "Cart Page", href: "/cart" },
-  { name: "Check Out", href: "/checkout" },
   { name: "View Sold Books", href: "/sold-old-books" },
   { name: "History", href: "/history" },
 ];

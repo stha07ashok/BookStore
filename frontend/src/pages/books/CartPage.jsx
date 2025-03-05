@@ -7,6 +7,7 @@ import {
   removeFromCart,
 } from "../../redux/features/carts/cartSlice";
 import { useUpdateBookItemsNumberMutation } from "../../redux/features/books/booksApi";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const CartPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -25,7 +26,6 @@ const CartPage = () => {
         product.itemsnumber !== undefined && product.itemsnumber !== null
           ? product.itemsnumber + product.quantity
           : product.quantity;
-
       // Update the stock for the book
       await updateBookItemsNumber({
         id: product._id,
@@ -40,7 +40,16 @@ const CartPage = () => {
   };
 
   const handleCheckOut = () => {
-    navigate("/checkout");
+    if (cartItems.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "No Products in Cart",
+        text: "Please add products to your cart before checking out.",
+        confirmButtonText: "Okay",
+      });
+    } else {
+      navigate("/checkout");
+    }
   };
 
   const handleClearCart = async () => {
