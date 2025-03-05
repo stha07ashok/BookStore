@@ -2,16 +2,17 @@ const mongoose = require("mongoose");
 const express = require("express");
 const Order = require("../orders/order.model");
 const Book = require("../books/book.model");
+const soldOldBooks = require("../soldOldBooks/old.book.model");
 const router = express.Router();
 
-// Function to calculate admin stats
+// GET /api/admin - Retrieve admin statistics
 router.get("/", async (req, res) => {
   try {
     // 1. Total number of orders
     const totalOrders = await Order.countDocuments();
 
     // 2. Total sales (sum of all totalPrice from orders)
-    const totalSales = await Order.aggregate([
+    const totalSalesResult = await Order.aggregate([
       {
         $group: {
           _id: null,
@@ -19,41 +20,46 @@ router.get("/", async (req, res) => {
         },
       },
     ]);
+    const totalSales = totalSalesResult[0]?.totalSales || 0;
 
-    // 4. Trending books statistics:
+    // 3. Trending books count
     const trendingBooksCount = await Book.aggregate([
-      { $match: { trending: true } }, // Match only trending books
-      { $count: "trendingBooksCount" }, // Return the count of trending books
+      { $match: { trending: true } },
+      { $count: "trendingBooksCount" },
     ]);
-
-    // If you want just the count as a number, you can extract it like this:
     const trendingBooks =
       trendingBooksCount.length > 0
         ? trendingBooksCount[0].trendingBooksCount
         : 0;
 
-    // 5. Total number of books
+    // 4. Total number of books
     const totalBooks = await Book.countDocuments();
 
-    // 6. Monthly sales (group by month and sum total sales for each month)
+    // 5. Monthly sales (group by month and sum total sales for each month)
     const monthlySales = await Order.aggregate([
       {
         $group: {
-          _id: { $dateToString: { format: "%Y-%m", date: "$createdAt" } }, // Group by year and month
-          totalSales: { $sum: "$totalPrice" }, // Sum totalPrice for each month
-          totalOrders: { $sum: 1 }, // Count total orders for each month
+          _id: { $dateToString: { format: "%Y-%m", date: "$createdAt" } },
+          totalSales: { $sum: "$totalPrice" },
+          totalOrders: { $sum: 1 },
         },
       },
       { $sort: { _id: 1 } },
     ]);
 
-    // Result summary
+    // 6. Total sold books: count documents in soldOldBooks collection with status "Sold"
+    const totalSoldBooks = await soldOldBooks.countDocuments({
+      status: "Sold",
+    });
+
+    // Return the aggregated admin stats
     res.status(200).json({
       totalOrders,
-      totalSales: totalSales[0]?.totalSales || 0,
+      totalSales,
       trendingBooks,
       totalBooks,
       monthlySales,
+      totalSoldBooks,
     });
   } catch (error) {
     console.error("Error fetching admin stats:", error);
