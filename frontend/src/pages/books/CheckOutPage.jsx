@@ -51,11 +51,14 @@ const CheckOutPage = () => {
       productIds: cartItems.map((item) => item._id),
       totalPrice: totalPrice,
       paymentMethod: paymentMethod,
+      bookTitle: cartItems.map((item) => item.title),
+      quantity: cartItems.map((item) => item.quantity),
     };
 
     try {
       // Create the order
       const orderResponse = await createOrder(newOrder).unwrap();
+      console.log("Order Response:", orderResponse);
 
       // Clear the cart after placing the order
       dispatch(clearCart()); // Dispatch the clearCart action to clear the cart
@@ -107,6 +110,24 @@ const CheckOutPage = () => {
             <p className="text-gray-500 mb-6 dark:text-white">
               Items: {totalItems > 0 ? totalItems : 0}
             </p>
+            <div className="mb-6">
+              <h3 className="text-lg font-medium dark:text-white">
+                Items in your cart:
+              </h3>
+              <ul className="list-disc pl-5 text-gray-500 dark:text-white">
+                {cartItems.length > 0 ? (
+                  cartItems.map((item) => (
+                    <li key={item._id} className="text-sm">
+                      {item.title} (x{item.quantity})
+                    </li>
+                  ))
+                ) : (
+                  <p className="text-gray-500 dark:text-white">
+                    Your cart is empty.
+                  </p>
+                )}
+              </ul>
+            </div>
           </div>
 
           <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6 dark:bg-gray-900 text-gray-900 dark:text-white border-2 border-gray-300 dark:border-white">

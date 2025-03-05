@@ -5,7 +5,6 @@ import { getImgUrl } from "../../utils/getimgurl";
 import {
   clearCart,
   removeFromCart,
-  addToCart,
 } from "../../redux/features/carts/cartSlice";
 import { useUpdateBookItemsNumberMutation } from "../../redux/features/books/booksApi";
 

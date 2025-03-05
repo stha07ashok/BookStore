@@ -8,19 +8,19 @@ const HistoryPage = () => {
 
   // Fetch orders and sold books using the updated queries
   const {
-    data: orders = [], // Default to an empty array if no data is returned
+    data: orders = [],
     isLoading: isOrdersLoading,
     isError: ordersError,
   } = useGetAllOrdersByEmailQuery(currentUser.email);
 
   const {
-    data: soldBooks = [], // Default to an empty array if no data is returned
+    data: soldBooks = [],
     isLoading: isSoldBooksLoading,
     isError: soldBooksError,
   } = useGetAllSoldBooksByEmailQuery(currentUser.email);
 
-  console.log("Orders: ", orders); // Debug orders data
-  console.log("Sold Books: ", soldBooks); // Debug soldBooks data
+  console.log("Orders: ", orders);
+  console.log("Sold Books: ", soldBooks);
 
   // Handle loading state
   if (isOrdersLoading || isSoldBooksLoading) {
@@ -58,7 +58,7 @@ const HistoryPage = () => {
     ),
   ];
 
-  console.log("Combined History: ", combinedHistory); // Debug combined history
+  console.log("Combined History: ", combinedHistory);
 
   // Function to determine status text color
   const getStatusTextColor = (status) => {
@@ -109,6 +109,7 @@ const HistoryPage = () => {
               <h3 className="font-semibold text-lg text-gray-800 dark:text-white">
                 {record.itemType}
               </h3>
+
               {record.itemType === "Your Order" ? (
                 <div className="text-sm mt-2 text-gray-800 dark:text-white">
                   <p>
@@ -146,6 +147,21 @@ const HistoryPage = () => {
                       {record.details.status}
                     </span>
                   </p>
+                  {Array.isArray(record.details.bookTitle) &&
+                    record.details.bookTitle.length > 0 && (
+                      <div className="mt-4">
+                        <h4 className="font-semibold text-md text-black dark:text-white">
+                          Books Ordered:
+                        </h4>
+                        <ul className="list-disc pl-5 text-sm text-gray-600 dark:text-white">
+                          {record.details.bookTitle.map((title, index) => (
+                            <li key={index}>
+                              {title} (x{record.details.quantity?.[index] ?? 1})
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                 </div>
               ) : (
                 <div className="text-sm mt-2 text-gray-800 dark:text-white">
@@ -161,7 +177,6 @@ const HistoryPage = () => {
                   <p>
                     <strong>Book Type:</strong> {record.details.type}
                   </p>
-
                   <p>
                     <strong>Status:</strong>{" "}
                     <span

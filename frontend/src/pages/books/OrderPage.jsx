@@ -118,11 +118,13 @@ const OrderPage = () => {
 
               <div className="mt-4">
                 <h4 className="font-semibold text-md text-black dark:text-white">
-                  Product Id:
+                  Books Ordered:
                 </h4>
                 <ul className="list-disc pl-5 text-sm text-gray-600 dark:text-white">
-                  {order.productIds.map((productId) => (
-                    <li key={productId}>{productId}</li>
+                  {order.bookTitle.map((title, index) => (
+                    <li key={index}>
+                      {title} (x{order.quantity[index]})
+                    </li>
                   ))}
                 </ul>
               </div>
