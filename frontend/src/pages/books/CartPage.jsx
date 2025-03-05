@@ -43,8 +43,8 @@ const CartPage = () => {
     if (cartItems.length === 0) {
       Swal.fire({
         icon: "warning",
-        title: "No Products in Cart",
-        text: "Please add products to your cart before checking out.",
+        title: "No Books in Cart!!",
+        text: "Please add Books to your cart before checking out!!",
         confirmButtonText: "Okay",
       });
     } else {
@@ -127,9 +127,7 @@ const CartPage = () => {
               ))}
             </ul>
           ) : (
-            <p className="text-gray-500 dark:text-gray-400">
-              No Products Found
-            </p>
+            <p className="text-gray-500 dark:text-gray-400">No Books Found!!</p>
           )}
         </div>
       </div>
