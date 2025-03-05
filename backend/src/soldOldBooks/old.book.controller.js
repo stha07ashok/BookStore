@@ -156,7 +156,7 @@ const deleteABook = async (req, res) => {
 
     const updatedBook = await Book.findByIdAndUpdate(
       id,
-      { isDeleted: true },
+      { isDeleted: true, status: "Book is deleted!!" },
       { new: true }
     );
 

@@ -141,39 +141,54 @@ const SoldBooksByEmail = () => {
                   <span className="font-semibold">Address:</span> {book.address}
                 </p>
               )}
+
               <div className="mt-4 flex gap-1 items-center">
                 <h4 className="font-semibold text-md text-black dark:text-white">
                   Status:
                 </h4>
                 <span
                   className={`text-sm font-semibold ${getStatusTextColor(
-                    book.status
+                    book.isDeleted ? "Rejected" : book.status || "Pending"
                   )}`}
                 >
-                  {book.status || "Pending"}
+                  {book.isDeleted
+                    ? "Book is deleted!!"
+                    : book.status || "Pending"}
                 </span>
               </div>
               <div className="mt-4 gap-4 grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 justify-center">
                 <button
-                  className="bg-green-500 text-white font-bold py-1 px-3 rounded hover:bg-green-700 transition duration-300"
+                  disabled={book.isDeleted}
+                  className={`bg-green-500 text-white font-bold py-1 px-3 rounded hover:bg-green-700 transition duration-300 ${
+                    book.isDeleted ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                   onClick={() => handleStatusChange(book._id, "Sold")}
                 >
                   Mark as Sold
                 </button>
                 <button
-                  className="bg-red-500 text-white font-bold py-1 px-3 rounded hover:bg-red-700 transition duration-300"
+                  disabled={book.isDeleted}
+                  className={`bg-red-500 text-white font-bold py-1 px-3 rounded hover:bg-red-700 transition duration-300 ${
+                    book.isDeleted ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                   onClick={() => handleStatusChange(book._id, "Rejected")}
                 >
                   Reject
                 </button>
                 <button
-                  className="bg-yellow-500 text-white font-bold py-1 px-3 rounded hover:bg-yellow-700 transition duration-300"
+                  disabled={book.isDeleted}
+                  className={`bg-yellow-500 text-white font-bold py-1 px-3 rounded hover:bg-yellow-700 transition duration-300 ${
+                    book.isDeleted ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                   onClick={() => handleStatusChange(book._id, "Pending")}
                 >
                   Set as Pending
                 </button>
                 <button
-                  className="bg-violet-500 text-white font-bold py-1 px-3 rounded hover:bg-purple-700 transition duration-300"
+                  disabled={book.isDeleted}
+                  className={`bg-violet-500 text-white font-bold py-1 px-3 rounded hover:bg-purple-700 transition duration-300 ${
+                    book.isDeleted ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                   onClick={() => handleStatusChange(book._id, "Processing")}
                 >
                   Processing

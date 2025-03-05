@@ -78,7 +78,7 @@ const deleteOrderById = async (req, res) => {
 
     const updatedOrder = await Order.findByIdAndUpdate(
       id,
-      { isDeleted: true },
+      { isDeleted: true, status: "Order is deleted!!" },
       { new: true }
     );
 
@@ -101,7 +101,7 @@ const updateOrderStatus = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    if (!["Pending", "Delivered", "Rejected", "On the way"].includes(status)) {
+    if (!["Pending", "Delivered", "On the way"].includes(status)) {
       return res.status(400).json({ message: "Invalid status" });
     }
 

@@ -75,6 +75,10 @@ const HistoryPage = () => {
         return "text-green-500";
       case "Processing":
         return "text-violet-500";
+      case "Order is deleted!!":
+        return "text-red-500";
+      case "Book is deleted!!":
+        return "text-red-500";
       default:
         return "text-gray-500";
     }

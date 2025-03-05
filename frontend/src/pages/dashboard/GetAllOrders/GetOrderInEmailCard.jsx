@@ -13,15 +13,11 @@ const OrdersByEmail = () => {
   const [newOrders, setNewOrders] = useState({});
 
   useEffect(() => {
-    // Get previously seen orders from localStorage
     const seenOrders =
       JSON.parse(localStorage.getItem(`seenOrders_${email}`)) || [];
-
-    // Extract order IDs from fetched data
     const currentOrderIds = orders.map((order) => order._id);
-
-    // Detect truly new orders (those not in seenOrders)
     const detectedNewOrders = {};
+
     currentOrderIds.forEach((id) => {
       if (!seenOrders.includes(id)) {
         detectedNewOrders[id] = true;
@@ -32,7 +28,6 @@ const OrdersByEmail = () => {
   }, [orders, email]);
 
   useEffect(() => {
-    // Store the current order IDs as seen once the user visits the page
     if (orders.length > 0) {
       const orderIds = orders.map((order) => order._id);
       localStorage.setItem(`seenOrders_${email}`, JSON.stringify(orderIds));
@@ -52,7 +47,7 @@ const OrdersByEmail = () => {
     switch (status) {
       case "Delivered":
         return "text-green-500";
-      case "Rejected":
+      case "Order is deleted!!":
         return "text-red-500";
       case "Pending":
         return "text-yellow-500";
@@ -92,7 +87,6 @@ const OrdersByEmail = () => {
               key={order._id}
               className="relative bg-white shadow-md rounded-lg p-6 border-2 border-black dark:border-white group dark:bg-gray-800 transition-transform transform hover:scale-105"
             >
-              {/* New Order Badge (Only if order is actually new) */}
               {newOrders[order._id] && (
                 <span className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                   New!
@@ -124,52 +118,47 @@ const OrdersByEmail = () => {
                   </span>
                 )}
               </p>
-
-              <div className="mt-4">
-                <h4 className="font-semibold text-md text-black dark:text-white">
-                  Address:
-                </h4>
-                <p className="text-sm text-gray-600 dark:text-white">
-                  {order.address.city}, {order.address.state},{" "}
-                  {order.address.country}, {order.address.zipcode}
-                </p>
-              </div>
-
-              {/* Status Display with Dynamic Text Color */}
               <div className="mt-4 flex gap-1 items-center">
                 <h4 className="font-semibold text-md text-black dark:text-white">
                   Status:
                 </h4>
                 <span
                   className={`text-sm font-semibold ${getStatusTextColor(
-                    order.status
+                    order.isDeleted
+                      ? "Order is deleted!!"
+                      : order.status || "Pending"
                   )}`}
                 >
-                  {order.status || "Pending"}
+                  {order.isDeleted
+                    ? "Order is deleted!!"
+                    : order.status || "Pending"}
                 </span>
               </div>
-
               <div className="mt-4 gap-4 grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 justify-center">
                 <button
-                  className="bg-green-500 text-white font-bold py-1 px-3 rounded hover:bg-green-700 transition duration-300"
+                  disabled={order.isDeleted}
+                  className={`bg-green-500 text-white font-bold py-1 px-3 rounded hover:bg-green-700 transition duration-300 ${
+                    order.isDeleted ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                   onClick={() => handleStatusChange(order._id, "Delivered")}
                 >
                   Mark as Delivered
                 </button>
+
                 <button
-                  className="bg-red-500 text-white font-bold py-1 px-3 rounded hover:bg-red-700 transition duration-300"
-                  onClick={() => handleStatusChange(order._id, "Rejected")}
-                >
-                  Reject Order
-                </button>
-                <button
-                  className="bg-yellow-500 text-white font-bold py-1 px-3 rounded hover:bg-yellow-700 transition duration-300"
+                  disabled={order.isDeleted}
+                  className={`bg-yellow-500 text-white font-bold py-1 px-3 rounded hover:bg-yellow-700 transition duration-300 ${
+                    order.isDeleted ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                   onClick={() => handleStatusChange(order._id, "Pending")}
                 >
                   Set as Pending
                 </button>
                 <button
-                  className="bg-violet-500 text-white font-bold py-1 px-3 rounded hover:bg-purple-700 transition duration-300"
+                  disabled={order.isDeleted}
+                  className={`bg-violet-500 text-white font-bold py-1 px-3 rounded hover:bg-purple-700 transition duration-300 ${
+                    order.isDeleted ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                   onClick={() => handleStatusChange(order._id, "On the way")}
                 >
                   On the way

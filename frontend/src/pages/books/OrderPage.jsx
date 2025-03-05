@@ -57,8 +57,6 @@ const OrderPage = () => {
     switch (status) {
       case "Delivered":
         return "text-green-500";
-      case "Rejected":
-        return "text-red-500";
       case "On the way":
         return "text-violet-500";
       default:
