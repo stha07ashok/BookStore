@@ -70,8 +70,10 @@ const Login = ({ darkMode }) => {
         darkMode ? "bg-gray-900 text-white" : "text-black"
       }`}
     >
-      <div className="w-full max-w-sm mx-auto bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4 border-2 border-black dark:border-white">
-        <h2 className="text-xl font-semibold mb-4">Please Login</h2>
+      <div className="w-full max-w-sm mx-auto bg-white dark:bg-gray-800 shadow-md rounded-md px-8 pt-6 pb-8 mb-4 border-2 border-gray-300 dark:border-white">
+        <h2 className="text-xl font-semibold mb-4 dark:text-white">
+          Please Login
+        </h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
@@ -123,7 +125,7 @@ const Login = ({ darkMode }) => {
             </button>
           </div>
         </form>
-        <p className="align-baseline font-medium mt-4 text-sm">
+        <p className="align-baseline font-medium mt-4 text-sm dark:text-white">
           Haven't an account? Please{" "}
           <Link to="/register" className="text-blue-500 hover:text-blue-700">
             Register

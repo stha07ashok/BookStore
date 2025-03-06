@@ -60,7 +60,7 @@ const Register = ({ darkMode }) => {
         darkMode ? "bg-gray-900 text-white" : " text-white"
       }`}
     >
-      <div className="w-full max-w-sm mx-auto bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4 border-2 border-black dark:border-white">
+      <div className="w-full max-w-sm mx-auto bg-white dark:bg-gray-800 shadow-md rounded-md px-8 pt-6 pb-8 mb-4 border-2 border-gray-300 dark:border-white">
         <h2 className="text-xl font-semibold text-black mb-4 dark:text-white">
           Please Register
         </h2>
