@@ -42,6 +42,12 @@ const Footer = () => {
           <Link to="/orders" className="dark:text-white">
             Orders
           </Link>
+          <Link to="/sold-old-books" className="dark:text-white">
+            View Sold Books
+          </Link>
+          <Link to="/history" className="dark:text-white">
+            History
+          </Link>
         </div>
 
         {/* right side */}
