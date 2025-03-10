@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Register = ({ darkMode }) => {
   const [message, setMessage] = useState("");
+  const [isSigningIn, setIsSigningIn] = useState(false);
   const navigate = useNavigate();
 
   const { registerUser, loginUser, signInWithGoogle } = useAuth();
@@ -46,10 +47,10 @@ const Register = ({ darkMode }) => {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle();
-      toast.success("Login successful!", { position: "top-center" });
+      alert("Login successful!");
       navigate("/");
     } catch (error) {
-      toast.error("Google sign-in failed!", { position: "top-center" });
+      alert("Google sign in failed!");
       console.error(error);
     }
   };
@@ -139,6 +140,17 @@ const Register = ({ darkMode }) => {
             Login
           </Link>
         </p>
+
+        {/* google sign in */}
+        <div className="mt-4">
+          <button
+            onClick={handleGoogleSignIn}
+            className="w-full flex flex-wrap gap-1 items-center justify-center bg-secondary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none"
+          >
+            <FaGoogle className="mr-2" />
+            Sign Up with Google
+          </button>
+        </div>
 
         {/* Footer */}
         <p className="mt-5 text-center text-gray-500 text-xs dark:text-gray-400">
