@@ -6,7 +6,7 @@ import avatarImg from "../assets/avatar.png";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAuth } from "../context/AuthContext";
-import Sidebar from "./sidebar";
+import Sidebar from "./Sidebar";
 import { useSearchBookByTitleQuery } from "../redux/features/books/booksApi";
 import Swal from "sweetalert2"; // Import SweetAlert2
 
