@@ -100,7 +100,7 @@ const Register = ({ darkMode }) => {
               name="email"
               id="email"
               placeholder="Email Address"
-              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow dark:bg-gray-700 dark:text-white"
+              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow dark:bg-gray-700 dark:text-white text-black"
             />
             {errors.email && (
               <p className="text-red-500 text-xs">{errors.email.message}</p>

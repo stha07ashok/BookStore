@@ -68,37 +68,37 @@ const DashboardLayout = () => {
         <nav className="flex flex-row md:flex-col justify-around md:justify-start items-center md:items-stretch md:space-y-6 p-4 md:p-0 md:mt-6">
           <div className="flex flex-col items-center">
             <NavLink to="/dashboard" className={getNavLinkClass}>
-              <RxDashboard className="h-6 w-6" />
+              <RxDashboard className="h-6 w-6 text-white bg-gray-800" />
             </NavLink>
-            <span>Dashboard</span>
+            <span className="text-white">Dashboard</span>
           </div>
 
           <div className="flex flex-col items-center">
             <NavLink to="/dashboard/add-new-book" className={getNavLinkClass}>
-              <HiViewGridAdd className="h-6 w-6" />
+              <HiViewGridAdd className="h-6 w-6 text-white bg-gray-800" />
             </NavLink>
-            <span>Add Book</span>
+            <span className="text-white">Add Book</span>
           </div>
 
           <div className="flex flex-col items-center">
             <NavLink to="/dashboard/manage-books" className={getNavLinkClass}>
-              <MdOutlineManageHistory className="h-6 w-6" />
+              <MdOutlineManageHistory className="h-6 w-6 text-white bg-gray-800" />
             </NavLink>
-            <span>Manage Book</span>
+            <span className="text-white">Manage Book</span>
           </div>
 
           <div className="flex flex-col items-center">
             <NavLink to="/dashboard/getallorders" className={getNavLinkClass}>
-              <FaBorderAll className="h-6 w-6" />
+              <FaBorderAll className="h-6 w-6 text-white bg-gray-800" />
             </NavLink>
-            <span>All Orders</span>
+            <span className="text-white">All Orders</span>
           </div>
 
           <div className="flex flex-col items-center">
             <NavLink to="/dashboard/soldoldbooks" className={getNavLinkClass}>
-              <PiBookOpenTextBold className="h-6 w-6" />
+              <PiBookOpenTextBold className="h-6 w-6 text-white bg-gray-800" />
             </NavLink>
-            <span className="text-balance px-4">Get Sold Old Books</span>
+            <span className="text-white px-4 ">Get Sold Old Books</span>
           </div>
         </nav>
       </aside>
