@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 
 const Register = ({ darkMode }) => {
   const [message, setMessage] = useState("");
@@ -46,11 +47,27 @@ const Register = ({ darkMode }) => {
 
   const handleGoogleSignIn = async () => {
     try {
+      // Attempt Google sign-in
       await signInWithGoogle();
-      alert("Login successful!");
-      navigate("/");
+
+      // Display success message using SweetAlert2
+      Swal.fire({
+        title: "Registerd successful!",
+        text: "You have successfully registered in with Google.",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        // Redirect the user to the homepage after closing the SweetAlert
+        navigate("/");
+      });
     } catch (error) {
-      alert("Google sign in failed!");
+      // Display error message using SweetAlert2
+      Swal.fire({
+        title: "Google Sign-Up Failed",
+        text: "Google sign-up failed. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
       console.error(error);
     }
   };

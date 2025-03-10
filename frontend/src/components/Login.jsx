@@ -139,7 +139,7 @@ const Login = ({ darkMode }) => {
             className="w-full flex flex-wrap gap-1 items-center justify-center bg-secondary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none"
           >
             <FaGoogle className="mr-2" />
-            Sign in with Google
+            Sign In with Google
           </button>
         </div>
 
