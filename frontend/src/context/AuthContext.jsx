@@ -7,7 +7,10 @@ import {
   signInWithPopup,
   signInWithEmailAndPassword,
   signOut,
+  sendEmailVerification,
+  sendPasswordResetEmail,
 } from "firebase/auth";
+import Swal from "sweetalert2";
 
 const AuthContext = createContext();
 
@@ -24,7 +27,25 @@ export const AuthProvide = ({ children }) => {
 
   // register a user
   const registerUser = async (email, password) => {
-    return await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    if (userCredential.user) {
+      await sendEmailVerification(userCredential.user);
+
+      // Show SweetAlert2 confirmation message
+      await Swal.fire({
+        title: "Verify Your Email",
+        text: "A verification link has been sent to your email. Please check your inbox and verify your email before logging in.",
+        icon: "info",
+        confirmButtonText: "OK",
+      });
+    }
+
+    return userCredential;
   };
 
   // login the user
@@ -40,6 +61,17 @@ export const AuthProvide = ({ children }) => {
   // logout the user
   const logout = () => {
     return signOut(auth);
+  };
+
+  //reset password
+  const resetPassword = async (email) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      return { success: true };
+    } catch (error) {
+      console.error("Error sending password reset email:", error);
+      return { success: false, message: error.message };
+    }
   };
 
   // manage user
@@ -68,6 +100,7 @@ export const AuthProvide = ({ children }) => {
     loginUser,
     signInWithGoogle,
     logout,
+    resetPassword,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

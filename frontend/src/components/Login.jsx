@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
+import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Login = ({ darkMode }) => {
   const [message, setMessage] = useState("");
-  const { loginUser, signInWithGoogle } = useAuth();
+  const { loginUser, signInWithGoogle, resetPassword } = useAuth();
   const navigate = useNavigate();
   const {
     register,
@@ -15,28 +15,42 @@ const Login = ({ darkMode }) => {
     formState: { errors },
   } = useForm();
 
-  const [passwordVisible, setPasswordVisible] = useState(false); // State for toggling password visibility
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const onSubmit = async (data) => {
     try {
-      await loginUser(data.email, data.password);
-      // Using SweetAlert2 after successful login
+      const userCredential = await loginUser(data.email, data.password);
+      const user = userCredential.user;
+
+      if (!user.emailVerified) {
+        await Swal.fire({
+          title: "Email not verified!",
+          text: "Please check your email and verify your account before logging in.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+
+        return;
+      }
+
       Swal.fire({
         title: "Login successful!",
         text: "You have successfully logged in.",
         icon: "success",
         confirmButtonText: "OK",
       });
+
       navigate("/");
     } catch (error) {
       setMessage("Please provide a valid email and password");
-      // Using SweetAlert2 for error handling
+
       Swal.fire({
         title: "Error",
         text: "Invalid email or password. Please try again.",
         icon: "error",
         confirmButtonText: "OK",
       });
+
       console.error(error);
     }
   };
@@ -44,7 +58,6 @@ const Login = ({ darkMode }) => {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle();
-      // Using SweetAlert2 after Google login
       Swal.fire({
         title: "Login successful!",
         text: "You have successfully logged in with Google.",
@@ -53,7 +66,6 @@ const Login = ({ darkMode }) => {
       });
       navigate("/");
     } catch (error) {
-      // Using SweetAlert2 for error handling
       Swal.fire({
         title: "Google Sign-In Failed",
         text: "Google sign-in failed. Please try again.",
@@ -61,6 +73,39 @@ const Login = ({ darkMode }) => {
         confirmButtonText: "OK",
       });
       console.error(error);
+    }
+  };
+
+  const handlePasswordReset = async () => {
+    const { value: email } = await Swal.fire({
+      title: "Reset Password",
+      input: "email",
+      inputLabel: "Enter your email to receive a password reset link",
+      inputPlaceholder: "Enter your email address",
+      showCancelButton: true,
+      confirmButtonText: "Send Reset Link",
+    });
+
+    if (email) {
+      try {
+        await resetPassword(email); // ✅ Add 'await' here
+
+        Swal.fire({
+          title: "Success!",
+          text: "Password reset email sent! Check your inbox.",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      } catch (error) {
+        console.error("Error sending password reset email:", error);
+
+        Swal.fire({
+          title: "Error",
+          text: "Failed to send reset email. Please try again.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
     }
   };
 
@@ -101,7 +146,7 @@ const Login = ({ darkMode }) => {
             </label>
             <input
               {...register("password", { required: true })}
-              type={passwordVisible ? "text" : "password"} // Toggle between text and password
+              type={passwordVisible ? "text" : "password"}
               name="password"
               id="password"
               placeholder="Password"
@@ -109,22 +154,26 @@ const Login = ({ darkMode }) => {
             />
             <button
               type="button"
-              onClick={() => setPasswordVisible(!passwordVisible)} // Toggle password visibility
-              className="absolute right-3 mt-4  transform -translate-y-1/2 text-gray-500"
+              onClick={() => setPasswordVisible(!passwordVisible)}
+              className="absolute right-3 mt-4 transform -translate-y-1/2 text-gray-500"
             >
-              {passwordVisible ? <FaEyeSlash /> : <FaEye />}{" "}
-              {/* Toggle eye icon */}
+              {passwordVisible ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
-          {message && (
-            <p className="text-red-500 text-xs italic mb-3">{message}</p>
-          )}
-          <div>
+          <div className="mb-4 flex justify-between">
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded focus:outline-none">
               Login
             </button>
+            <button
+              type="button"
+              onClick={handlePasswordReset}
+              className="text-blue-500 hover:underline"
+            >
+              Forgot Password?
+            </button>
           </div>
         </form>
+
         <p className="align-baseline font-medium mt-4 text-sm dark:text-white">
           Haven't an account? Please{" "}
           <Link to="/register" className="text-blue-500 hover:text-blue-700">
@@ -132,7 +181,7 @@ const Login = ({ darkMode }) => {
           </Link>
         </p>
 
-        {/* google sign in */}
+        {/* Google Sign In */}
         <div className="mt-4">
           <button
             onClick={handleGoogleSignIn}

@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
+import { sendEmailVerification } from "firebase/auth";
 
 const Register = ({ darkMode }) => {
   const [message, setMessage] = useState("");
@@ -25,22 +26,23 @@ const Register = ({ darkMode }) => {
   const onSubmit = async (data) => {
     try {
       // Register the user
-      await registerUser(data.email, data.password);
+      const userCredential = await registerUser(data.email, data.password);
+      const user = userCredential.user;
 
-      // Automatically log in the user after registration
-      await loginUser(data.email, data.password);
+      // Send verification email
+      await sendEmailVerification(user);
 
-      // Navigate to the home page after a delay
-      setTimeout(() => {
-        navigate("/");
-      });
-
-      // Show success notification
-      toast.success("User registered and logged in successfully!", {
+      // Show a success toast and instruct the user to verify their email
+      toast.info("Verification email sent. Please check your inbox.", {
         position: "top-center",
       });
+
+      // Redirect to login page
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
     } catch (error) {
-      setMessage("Please provide a valid email and password");
+      setMessage("Please provide a valid email and password.");
       console.error(error);
     }
   };
