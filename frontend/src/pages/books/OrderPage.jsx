@@ -90,7 +90,8 @@ const OrderPage = () => {
                 <span className="font-semibold">Email:</span> {order.email}
               </p>
               <p className="text-sm text-gray-600 dark:text-white">
-                <span className="font-semibold">Phone:</span> {order.phone}
+                <span className="font-semibold">Esewa / Phone Number:</span>{" "}
+                {order.phone}
               </p>
               <p className="text-sm text-gray-600 dark:text-white ">
                 <span className="font-semibold">Payment Method:</span>{" "}
