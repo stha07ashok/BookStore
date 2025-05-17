@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import { AuthProvide } from "./context/AuthContext";
 import { useEffect, useState } from "react";
 
+
 function App() {
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("darkMode") === "true" // Load dark mode preference from localStorage

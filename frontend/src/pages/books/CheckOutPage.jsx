@@ -172,7 +172,7 @@ const CheckOutPage = () => {
                   </div>
 
                   <div className="md:col-span-5">
-                    <label htmlFor="phone">Phone Number</label>
+                    <label htmlFor="phone">Esewa / Phone Number</label>
                     <input
                       {...register("phone", { required: true })}
                       type="number"
